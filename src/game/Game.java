@@ -25,19 +25,9 @@ public class Game {
      * @param predictionString The target text the user must type.
      */
     public Game(String predictionString) {
-        /*
-        * Turn the prediction string into an array of words.
-        */
         // TODO: problem is that words that begin after newline are not aligned to the left, looks bad.
-        predictionArray = predictionString.split("\\s+");
 
-        // Add space to end of each word except for the last one.
-        for (int i = 0; i < predictionArray.length-1; i++) {
-            predictionArray[i] += " ";
-        }
-        for (int i = 0; i < predictionArray.length; i++) {
-            System.out.print(predictionArray[i]);
-        }
+        predictionArray = createPredictionArray(predictionString);
 
         // Setup first predicted word
         currentPredictedWordIndex = 0;
@@ -49,6 +39,25 @@ public class Game {
 
         typingListener = new DocumentFilterListener(this);
         hud.setTypingAreaListener(typingListener);
+    }
+
+
+    /**
+     * Turns an unformated string to be typed into an array of words that
+     * can be used to compare to what the user has typed.
+     * @param predictionString what the user should type.
+     * @return predictionArray the prediction string in a special format of words.
+     */
+    public String[] createPredictionArray(String predictionString) {
+        String[] predictionArray = predictionString.split("\\s+");
+        // Add space to end of each word except for the last one.
+        for (int i = 0; i < predictionArray.length-1; i++) {
+            predictionArray[i] += " ";
+        }
+        for (int i = 0; i < predictionArray.length; i++) {
+            System.out.print(predictionArray[i]);
+        }
+        return predictionArray;
     }
 
     /**
