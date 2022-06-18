@@ -24,23 +24,23 @@ public class Game {
      * It also create a document listener that notifies the Game class when a user types something.
      * @param predictionString The target text the user must type.
      */
-    public Game(String predictionString) {
+    public Game(String predictionString, boolean visible) {
         // TODO: problem is that words that begin after newline are not aligned to the left, looks bad.
 
         predictionArray = createPredictionArray(predictionString);
-
         // Setup first predicted word
         currentPredictedWordIndex = 0;
         currentPredictedWord = this.predictionArray[currentPredictedWordIndex];
         currentTypedWord = "";
 
-        hud = new HUD(true);
+
+
+        hud = new HUD(visible);
         hud.setTextShowArea(predictionString);
 
         typingListener = new DocumentFilterListener(this);
         hud.setTypingAreaListener(typingListener);
     }
-
 
     /**
      * Turns an unformated string to be typed into an array of words that
@@ -144,7 +144,7 @@ public class Game {
     public static void main(String[] args) {
         // System.out.println("Hello, world!");
         String predictionString = "You are supposed to type this.\n This is a new line hahahaha.\n This is another line.";
-        Game game = new Game(predictionString);
+        Game game = new Game(predictionString,true);
 
     }
 }
