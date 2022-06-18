@@ -19,10 +19,16 @@ public class Game {
 
     private String whatIsBeingTyped;
 
+    /**
+     * Game constructor. This fixes the predicted string and sets up the HUD that visualizes the text.
+     * It also create a document listener that notifies the Game class when a user types something.
+     * @param predictionString The target text the user must type.
+     */
     public Game(String predictionString) {
         /*
         * Turn the prediction string into an array of words.
-        *  */
+        */
+        // TODO: problem is that words that begin after newline have extra space.
         predictionArray = predictionString.split("\\s+");
         // Add space to end of each word except for the last one.
         for (int i = 0; i < predictionArray.length-1; i++) {
@@ -32,10 +38,11 @@ public class Game {
             System.out.print(predictionArray[i]);
         }
 
+        // Setup first predicted word
         currentPredictedWordIndex = 0;
         currentPredictedWord = this.predictionArray[currentPredictedWordIndex];
-        predictionString = predictionString;
         currentTypedWord = "";
+
         hud = new HUD();
         hud.setTextShowArea(predictionString);
 
@@ -43,6 +50,9 @@ public class Game {
         hud.setTypingAreaListener(typingListener);
     }
 
+    /**
+     * This method decides what the next predicted word should be.
+     */
     public void updateNextPredictedWord(){
         currentPredictedWordIndex+=1;
         if(currentPredictedWordIndex < predictionArray.length) {
@@ -56,13 +66,16 @@ public class Game {
         currentTypedWord = "";
     }
 
+    /**
+     * This method is called whenever the user has typed something.
+     * The method considers where the user has typed, and if
+     * the current typed word is the predicted word.
+     * @param offset where the user has typed something. Offset 0 means at the beginning.
+     * @param text the string that the user has typed. Oftentimes a char.
+     */
     public void textWasReplaced(int offset, String text){
-        // The listener calls this method when a user has typed in something.
         System.out.println("Text was replaced");
-        // Modify the current word
-//        System.out.println("offset in text was replaced");
-//        System.out.println(offset);
-        // Appending char
+        // Appending char at end
         if (offset == currentTypedWord.length()) {
             hud.appendTextToTypeArea(text);
             currentTypedWord += text;
@@ -87,27 +100,30 @@ public class Game {
         typingListener.setListening(true);
     }
 
+    /**
+     * This method is called whenever the user has removed text from the text type area in the HUD.
+     * @param offset the position of the first character that is being removed
+     * @param length the length of the text that is being removed.
+     */
     public void textWasRemoved(int offset, int length) {
-        // Modify the current word
         if(!currentTypedWord.equals("")) {
             // This means we are removing the entire word
             if (length == currentTypedWord.length()) {
                 this.hud.clearTextTypeArea();
                 clearCurrentTypedWord();
             }
-            // Removing last character
            else {
+               // Removing the last character
                if(offset == currentTypedWord.length()) {
                     currentTypedWord = currentTypedWord.substring(0,offset);
                 } else {
 //                System.out.print(currentTypedWord.length());
                     String firstPart = currentTypedWord.substring(0,offset);
 //                System.out.println(firstPart);
-                    String secondPart = currentTypedWord.substring(offset+1,currentTypedWord.length());
+                    String secondPart = currentTypedWord.substring(offset+1);
 //                System.out.println(secondPart);
                     currentTypedWord = firstPart + secondPart;
                 }
-                // Update text field
                 hud.setTextTypeArea(currentTypedWord);
             }
         }
