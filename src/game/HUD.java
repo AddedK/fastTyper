@@ -15,7 +15,7 @@ public class HUD {
 
     public HUD() {
 
-        JFrame f=new JFrame("Button Example");
+        JFrame f=new JFrame("FastTyper");
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         typingArea=new JTextArea(2,2);
