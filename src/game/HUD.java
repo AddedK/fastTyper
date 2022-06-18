@@ -12,7 +12,7 @@ public class HUD {
     private JTextArea typingArea; // Text area that  the user types into
     private JTextArea textAreaTarget; // Text area showing the text that the user must type.
 
-    public HUD() {
+    public HUD(boolean visible) {
         JFrame f=new JFrame("FastTyper");
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -30,7 +30,7 @@ public class HUD {
         f.add(textAreaTarget);
         f.setSize(400,800);
         f.setLayout(null);
-        f.setVisible(true);
+        f.setVisible(visible);
     }
 
     public void setTextShowArea(String text) {

@@ -28,8 +28,9 @@ public class Game {
         /*
         * Turn the prediction string into an array of words.
         */
-        // TODO: problem is that words that begin after newline have extra space.
+        // TODO: problem is that words that begin after newline are not aligned to the left, looks bad.
         predictionArray = predictionString.split("\\s+");
+
         // Add space to end of each word except for the last one.
         for (int i = 0; i < predictionArray.length-1; i++) {
             predictionArray[i] += " ";
@@ -43,7 +44,7 @@ public class Game {
         currentPredictedWord = this.predictionArray[currentPredictedWordIndex];
         currentTypedWord = "";
 
-        hud = new HUD();
+        hud = new HUD(true);
         hud.setTextShowArea(predictionString);
 
         typingListener = new DocumentFilterListener(this);
@@ -133,7 +134,7 @@ public class Game {
 
     public static void main(String[] args) {
         // System.out.println("Hello, world!");
-        String predictionString = "You are supposed to type this. \n This is a new line hahahaha.";
+        String predictionString = "You are supposed to type this.\n This is a new line hahahaha.\n This is another line.";
         Game game = new Game(predictionString);
 
     }
