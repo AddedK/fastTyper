@@ -40,8 +40,12 @@ public class HUD {
 
     }
 
-    public void setTextShowAre(String text) {
+    public void setTextShowArea(String text) {
         textAreaShower.setText(text);
+    }
+
+    public void setTextTypeArea(String text) {
+        typingArea.setText(text);
     }
 
     public void setTypingAreaListener(DocumentFilterListener dfl) {
@@ -49,12 +53,12 @@ public class HUD {
     }
 
     public void clearTextTypeArea() {
-        System.out.println("Clearing text type area");
+//        System.out.println("Clearing text type area");
         typingArea.selectAll();
         typingArea.replaceSelection("");
     }
     public void appendTextToTypeArea(String text) {
-        System.out.println(String.format("set text typed %s",text));
+//        System.out.println(String.format("set text typed %s",text));
         typingArea.append(text);
     }
 
