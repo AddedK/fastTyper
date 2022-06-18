@@ -23,7 +23,7 @@ public class Game {
         /*
         * Turn the prediction string into an array of words.
         *  */
-        this.predictionArray = predictionString.split("\\s+");
+        predictionArray = predictionString.split("\\s+");
         // Add space to end of each word except for the last one.
         for (int i = 0; i < predictionArray.length-1; i++) {
             predictionArray[i] += " ";
@@ -32,19 +32,19 @@ public class Game {
             System.out.print(predictionArray[i]);
         }
 
-        this.currentPredictedWordIndex = 0;
-        this.currentPredictedWord = this.predictionArray[currentPredictedWordIndex];
-        this.predictionString = predictionString;
-        this.currentTypedWord = "";
-        this.hud = new HUD();
-        this.hud.setTextShowArea(predictionString);
+        currentPredictedWordIndex = 0;
+        currentPredictedWord = this.predictionArray[currentPredictedWordIndex];
+        predictionString = predictionString;
+        currentTypedWord = "";
+        hud = new HUD();
+        hud.setTextShowArea(predictionString);
 
-        this.typingListener = new DocumentFilterListener(this);
-        this.hud.setTypingAreaListener(typingListener);
+        typingListener = new DocumentFilterListener(this);
+        hud.setTypingAreaListener(typingListener);
     }
 
     public void updateNextPredictedWord(){
-        this.currentPredictedWordIndex+=1;
+        currentPredictedWordIndex+=1;
         if(currentPredictedWordIndex < predictionArray.length) {
             this.currentPredictedWord = predictionArray[currentPredictedWordIndex];
         } else {
@@ -53,7 +53,7 @@ public class Game {
     }
 
     public void clearCurrentTypedWord() {
-        this.currentTypedWord = "";
+        currentTypedWord = "";
     }
 
     public void textWasReplaced(int offset, String text){
@@ -64,12 +64,12 @@ public class Game {
 //        System.out.println(offset);
         // Appending char
         if (offset == currentTypedWord.length()) {
-            this.hud.appendTextToTypeArea(text);
-            this.currentTypedWord += text;
+            hud.appendTextToTypeArea(text);
+            currentTypedWord += text;
         } else {
-            this.currentTypedWord = this.currentTypedWord.substring(0, offset)
+            currentTypedWord = currentTypedWord.substring(0, offset)
                     + text
-                    + this.currentTypedWord.substring(offset);
+                    + currentTypedWord.substring(offset);
         }
 
         System.out.println(String.format("CurrentTypedWord = %s",this.currentTypedWord));
@@ -77,14 +77,14 @@ public class Game {
         // Check if the current typed word is the one we are meant to predict
         if(currentTypedWord.equals(currentPredictedWord)) {
             System.out.println("You got it right!");
-            this.hud.clearTextTypeArea();
+            hud.clearTextTypeArea();
             clearCurrentTypedWord();
             updateNextPredictedWord();
         } else {
-            this.hud.setTextTypeArea(currentTypedWord);
+            hud.setTextTypeArea(currentTypedWord);
 
         }
-        this.typingListener.setListening(true);
+        typingListener.setListening(true);
     }
 
     public void textWasRemoved(int offset, int length) {
@@ -98,20 +98,20 @@ public class Game {
             // Removing last character
            else {
                if(offset == currentTypedWord.length()) {
-                    this.currentTypedWord = currentTypedWord.substring(0,offset);
+                    currentTypedWord = currentTypedWord.substring(0,offset);
                 } else {
 //                System.out.print(currentTypedWord.length());
                     String firstPart = currentTypedWord.substring(0,offset);
 //                System.out.println(firstPart);
                     String secondPart = currentTypedWord.substring(offset+1,currentTypedWord.length());
 //                System.out.println(secondPart);
-                    this.currentTypedWord = firstPart + secondPart;
+                    currentTypedWord = firstPart + secondPart;
                 }
                 // Update text field
-                this.hud.setTextTypeArea(currentTypedWord);
+                hud.setTextTypeArea(currentTypedWord);
             }
         }
-        this.typingListener.setListening(true);
+        typingListener.setListening(true);
 
     }
 
