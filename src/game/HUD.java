@@ -11,7 +11,7 @@ import javax.swing.text.AbstractDocument;
 public class HUD {
 
     private JTextArea typingArea; // This is the one the user types into
-    private JTextArea textAreaShower;
+    private JTextArea textAreaTarget; // This is the text area showing the text that the user must type.
 
     public HUD() {
 
@@ -19,11 +19,10 @@ public class HUD {
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         typingArea=new JTextArea(2,2);
-        textAreaShower=new JTextArea(2,2);
+        textAreaTarget=new JTextArea(2,2);
 
 
-        textAreaShower.setBounds(50,100, 250,70);
-
+        textAreaTarget.setBounds(50,100, 250,70);
         typingArea.setBounds(50,200, 250,20);
 
 
@@ -33,7 +32,7 @@ public class HUD {
 
         f.add(b);
         f.add(typingArea);
-        f.add(textAreaShower);
+        f.add(textAreaTarget);
         f.setSize(400,800);
         f.setLayout(null);
         f.setVisible(true);
@@ -41,7 +40,7 @@ public class HUD {
     }
 
     public void setTextShowArea(String text) {
-        textAreaShower.setText(text);
+        textAreaTarget.setText(text);
     }
 
     public void setTextTypeArea(String text) {
