@@ -48,7 +48,7 @@ public class Game {
      * @param predictionString what the user should type.
      * @return predictionArray the prediction string in a special format of words.
      */
-    public String[] createPredictionArray(String predictionString) {
+    public static String[] createPredictionArray(String predictionString) {
         String[] predictionArray = predictionString.split("\\s+");
         // Add space to end of each word except for the last one.
         for (int i = 0; i < predictionArray.length-1; i++) {
