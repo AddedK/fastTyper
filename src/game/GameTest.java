@@ -27,6 +27,9 @@ class GameTest {
         assertArrayEquals(answer1,prediction1);
     }
 
+    /**
+     * GetSetPredictionArray tests
+     */
     @Test
     public void testGetSetPredictionArray1() {
         String[] answerEmpty = {""};
@@ -40,6 +43,24 @@ class GameTest {
         game.setPredictionArray(answer1);
         String[] gamePredictionArray2 = game.getPredictionArray();
         assertArrayEquals(gamePredictionArray2,answer1);
+    }
+
+    /**
+     * CurrentPredictedWordIndex tests
+     */
+
+    @Test
+    public void testGetSetCurrentPredictedWordIndex1() {
+        String predictionString1 = "Party";
+        String predictionString2 = "Dance";
+
+        Game game = new Game("",false);
+        int gameCurrentlyPredictedWordIndex1 = game.getCurrentPredictedWordIndex();
+        assertEquals(gameCurrentlyPredictedWordIndex1,0);
+
+        game.setCurrentPredictedWordIndex(5);
+        int gameCurrentlyPredictedWordIndex2 = game.getCurrentPredictedWordIndex();
+        assertEquals(gameCurrentlyPredictedWordIndex2,5);
     }
 
     /**
