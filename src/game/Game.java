@@ -33,8 +33,6 @@ public class Game {
         currentPredictedWord = this.predictionArray[currentPredictedWordIndex];
         currentTypedWord = "";
 
-
-
         hud = new HUD(visible);
         hud.setTextShowArea(predictionString);
 
@@ -72,9 +70,6 @@ public class Game {
         }
     }
 
-    public void clearCurrentTypedWord() {
-        currentTypedWord = "";
-    }
 
     /**
      * This method is called whenever the user has typed something.
@@ -139,6 +134,18 @@ public class Game {
         }
         typingListener.setListening(true);
 
+    }
+
+    public void clearCurrentTypedWord() {
+        currentTypedWord = "";
+    }
+
+    public String getCurrentTypedWord() {
+        return currentTypedWord;
+    }
+
+    public String[] getPredictionArray() {
+        return predictionArray;
     }
 
     public static void main(String[] args) {
