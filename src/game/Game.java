@@ -17,7 +17,6 @@ public class Game {
     private String currentPredictedWord;
     private String currentTypedWord;
 
-    private String whatIsBeingTyped;
 
     /**
      * Game constructor. This fixes the predicted string and sets up the HUD that visualizes the text.
