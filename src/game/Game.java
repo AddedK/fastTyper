@@ -25,11 +25,11 @@ public class Game {
     public Game(String predictionString, boolean visible) {
         // TODO: problem is that words that begin after newline are not aligned to the left, looks bad.
 
-        predictionArray = createPredictionArray(predictionString);
+        setPredictionArray(createPredictionArray(predictionString));
         // Setup first predicted word
         currentPredictedWordIndex = 0;
         currentPredictedWord = this.predictionArray[currentPredictedWordIndex];
-        currentTypedWord = "";
+        currentTypedWord="";
 
         hud = new HUD(visible);
         hud.setTextShowArea(predictionString);
