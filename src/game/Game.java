@@ -95,7 +95,7 @@ public class Game {
         if(currentlyTypedWord.equals(currentPredictedWord)) {
             System.out.println("You got it right!");
             hud.clearTextTypeArea();
-            clearCurrentTypedWord();
+            setCurrentTypedWord("");
             updateNextPredictedWord();
         } else {
             hud.setTextTypeArea(currentlyTypedWord);
@@ -115,7 +115,7 @@ public class Game {
             // This means we are removing the entire word
             if (length == currentlyTypedWord.length()) {
                 this.hud.clearTextTypeArea();
-                clearCurrentTypedWord();
+                setCurrentTypedWord("");
             }
            else {
                // Removing the last character
@@ -133,9 +133,10 @@ public class Game {
 
     }
 
-    public void clearCurrentTypedWord() {
-        currentTypedWord = "";
-    }
+    /**
+     * Getters and setters
+     */
+
 
     public String getCurrentTypedWord() {
         return currentTypedWord;
