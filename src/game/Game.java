@@ -26,7 +26,7 @@ public class Game {
         setPredictionArray(createPredictionArray(predictionString));
         // Setup first predicted word
         setCurrentPredictedWordIndex(0);
-        currentPredictedWord = this.predictionArray[getCurrentPredictedWordIndex()];
+        setCurrentPredictedWord(getPredictionArray()[getCurrentPredictedWordIndex()]);
         setCurrentTypedWord("");
 
         hud = new HUD(visible);
@@ -61,7 +61,7 @@ public class Game {
         setCurrentPredictedWordIndex(getCurrentPredictedWordIndex()+1);
         int curPredWordIndex = getCurrentPredictedWordIndex();
         if(curPredWordIndex < predictionArray.length) {
-            this.currentPredictedWord = predictionArray[curPredWordIndex];
+            setCurrentPredictedWord(predictionArray[curPredWordIndex]);
         } else {
             System.out.println("There are no more words to predict!");
         }
@@ -92,7 +92,7 @@ public class Game {
 
         // Check if the current typed word is the one we are meant to predict
         currentlyTypedWord = getCurrentTypedWord();
-        if(currentlyTypedWord.equals(currentPredictedWord)) {
+        if(currentlyTypedWord.equals(getCurrentPredictedWord())) {
             System.out.println("You got it right!");
             hud.clearTextTypeArea();
             setCurrentTypedWord("");
@@ -137,15 +137,6 @@ public class Game {
      * Getters and setters
      */
 
-
-    public String getCurrentTypedWord() {
-        return currentTypedWord;
-    }
-
-    public void setCurrentTypedWord(String newTypedWord) {
-        currentTypedWord = newTypedWord;
-    }
-
     public String[] getPredictionArray() {
         return predictionArray;
     }
@@ -162,6 +153,21 @@ public class Game {
         this.currentPredictedWordIndex = currentPredictedWordIndex;
     }
 
+    public String getCurrentPredictedWord() {
+        return currentPredictedWord;
+    }
+
+    public void setCurrentPredictedWord(String currentPredictedWord) {
+        this.currentPredictedWord = currentPredictedWord;
+    }
+
+    public String getCurrentTypedWord() {
+        return currentTypedWord;
+    }
+
+    public void setCurrentTypedWord(String newTypedWord) {
+        currentTypedWord = newTypedWord;
+    }
 
     public static void main(String[] args) {
         String predictionString = "You are supposed to type this.\n This is a new line hahahaha.\n This is another line.";
