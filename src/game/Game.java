@@ -9,7 +9,6 @@ package game;
 public class Game {
     private final HUD hud;
     private DocumentFilterListener typingListener;
-    private String predictionString;
     private String[] predictionArray;
 
 
