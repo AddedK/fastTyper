@@ -15,6 +15,8 @@ public class HUD {
     public HUD(boolean visible) {
         JFrame f=new JFrame("FastTyper");
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        // set JFrame in center of the screen
+        f.setLocationRelativeTo(null);
 
         typingArea=new JTextArea(2,2);
         textAreaTarget=new JTextArea(2,2);
