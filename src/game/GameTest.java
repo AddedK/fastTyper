@@ -44,6 +44,23 @@ class GameTest {
     }
 
     @Test
+    public void testSetGetPredictionArray1() {
+        String[] answerEmpty = {""};
+        String predictionString1 = "I like to party.\nThis is great.\nSuper fun.";
+        String[] answer1 = {"I ", "like ", "to ", "party. ", "This ","is ","great. ","Super ","fun."};
+
+        Game game = new Game("",false);
+        String[] gamePredictionArray1 = game.getPredictionArray();
+        assertArrayEquals(gamePredictionArray1,answerEmpty);
+
+        game.setPredictionArray(answer1);
+        String[] gamePredictionArray2 = game.getPredictionArray();
+        assertArrayEquals(gamePredictionArray2,answer1);
+    }
+
+
+
+    @Test
     public void testGame() {
         String predictionString1 = "I like to party.";
         String[] answer1 = {"I ", "like ", "to ", "party."};
