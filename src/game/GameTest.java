@@ -6,6 +6,22 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GameTest {
 
+    /**
+     * CurrentTypedWord tests
+     */
+
+    @Test
+    public void testCurrentTypedWord1() {
+        Game game = new Game("",false);
+        game.setCurrentTypedWord("");
+
+        String gameCurrentTypedWord = game.getCurrentTypedWord();
+        assertEquals(gameCurrentTypedWord,"");
+
+        game.setCurrentTypedWord("This is super cool!");
+        gameCurrentTypedWord = game.getCurrentTypedWord();
+        assertEquals(gameCurrentTypedWord,"This is super cool!");
+    }
 
     /**
      * CreatePredictionArray tests
