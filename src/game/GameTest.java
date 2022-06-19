@@ -6,22 +6,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GameTest {
 
-    /**
-     * CurrentTypedWord tests
-     */
-
-    @Test
-    public void testCurrentTypedWord1() {
-        Game game = new Game("",false);
-        game.setCurrentTypedWord("");
-
-        String gameCurrentTypedWord = game.getCurrentTypedWord();
-        assertEquals(gameCurrentTypedWord,"");
-
-        game.setCurrentTypedWord("This is super cool!");
-        gameCurrentTypedWord = game.getCurrentTypedWord();
-        assertEquals(gameCurrentTypedWord,"This is super cool!");
-    }
 
     /**
      * CreatePredictionArray tests
@@ -44,7 +28,7 @@ class GameTest {
     }
 
     @Test
-    public void testSetGetPredictionArray1() {
+    public void testGetSetPredictionArray1() {
         String[] answerEmpty = {""};
         String predictionString1 = "I like to party.\nThis is great.\nSuper fun.";
         String[] answer1 = {"I ", "like ", "to ", "party. ", "This ","is ","great. ","Super ","fun."};
@@ -57,6 +41,44 @@ class GameTest {
         String[] gamePredictionArray2 = game.getPredictionArray();
         assertArrayEquals(gamePredictionArray2,answer1);
     }
+
+    /**
+     * CurrentPredictedWord tests
+     */
+
+    @Test
+    public void testGetSetCurrentPredictedWord1() {
+        String predictionString1 = "Party";
+        String predictionString2 = "Dance";
+
+        Game game = new Game(predictionString1,false);
+        String gameCurrentPredictedWord1 = game.getCurrentPredictedWord();
+        assertEquals(gameCurrentPredictedWord1,predictionString1);
+
+        game.setCurrentPredictedWord(predictionString2);
+        String gameCurrentPredictedWord2 = game.getCurrentPredictedWord();
+        assertEquals(gameCurrentPredictedWord2,predictionString2);
+
+
+    }
+
+    /**
+     * CurrentTypedWord tests
+     */
+
+    @Test
+    public void testCurrentTypedWord1() {
+        Game game = new Game("",false);
+        game.setCurrentTypedWord("");
+
+        String gameCurrentTypedWord = game.getCurrentTypedWord();
+        assertEquals(gameCurrentTypedWord,"");
+
+        game.setCurrentTypedWord("This is super cool!");
+        gameCurrentTypedWord = game.getCurrentTypedWord();
+        assertEquals(gameCurrentTypedWord,"This is super cool!");
+    }
+
 
 
 
