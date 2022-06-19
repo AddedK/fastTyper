@@ -142,8 +142,16 @@ public class Game {
         return currentTypedWord;
     }
 
+    public void setCurrentTypedWord(String newTypedWord) {
+        currentTypedWord = newTypedWord;
+    }
+
     public String[] getPredictionArray() {
         return predictionArray;
+    }
+
+    public void setPredictionArray(String[] newPredictionArray) {
+        predictionArray = newPredictionArray;
     }
 
     public static void main(String[] args) {
