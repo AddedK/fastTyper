@@ -29,7 +29,7 @@ public class Game {
         // Setup first predicted word
         currentPredictedWordIndex = 0;
         currentPredictedWord = this.predictionArray[currentPredictedWordIndex];
-        currentTypedWord="";
+        setCurrentTypedWord("");
 
         hud = new HUD(visible);
         hud.setTextShowArea(predictionString);
@@ -78,26 +78,28 @@ public class Game {
      */
     public void textWasReplaced(int offset, String text){
         System.out.println("Text was replaced");
+        String currentlyTypedWord = getCurrentTypedWord();
         // Appending char at end
-        if (offset == currentTypedWord.length()) {
+        if (offset == currentlyTypedWord.length()) {
             hud.appendTextToTypeArea(text);
-            currentTypedWord += text;
+            setCurrentTypedWord(currentlyTypedWord+text);
         } else {
-            currentTypedWord = currentTypedWord.substring(0, offset)
+            setCurrentTypedWord(currentlyTypedWord.substring(0, offset)
                     + text
-                    + currentTypedWord.substring(offset);
+                    + currentlyTypedWord.substring(offset));
         }
 
-        System.out.println(String.format("CurrentTypedWord = %s",this.currentTypedWord));
+        System.out.println(String.format("CurrentTypedWord = %s",getCurrentTypedWord()));
 
         // Check if the current typed word is the one we are meant to predict
-        if(currentTypedWord.equals(currentPredictedWord)) {
+        currentlyTypedWord = getCurrentTypedWord();
+        if(currentlyTypedWord.equals(currentPredictedWord)) {
             System.out.println("You got it right!");
             hud.clearTextTypeArea();
             clearCurrentTypedWord();
             updateNextPredictedWord();
         } else {
-            hud.setTextTypeArea(currentTypedWord);
+            hud.setTextTypeArea(currentlyTypedWord);
 
         }
         typingListener.setListening(true);
@@ -109,23 +111,24 @@ public class Game {
      * @param length the length of the text that is being removed.
      */
     public void textWasRemoved(int offset, int length) {
-        if(!currentTypedWord.equals("")) {
+        String currentlyTypedWord = getCurrentTypedWord();
+        if(!currentlyTypedWord.equals("")) {
             // This means we are removing the entire word
-            if (length == currentTypedWord.length()) {
+            if (length == currentlyTypedWord.length()) {
                 this.hud.clearTextTypeArea();
                 clearCurrentTypedWord();
             }
            else {
                // Removing the last character
-               if(offset == currentTypedWord.length()) {
-                    currentTypedWord = currentTypedWord.substring(0,offset);
+               if(offset == currentlyTypedWord.length()) {
+                   setCurrentTypedWord(currentlyTypedWord.substring(0,offset));
                 } else {
 //                System.out.print(currentTypedWord.length());
-                    String firstPart = currentTypedWord.substring(0,offset);
+                    String firstPart = currentlyTypedWord.substring(0,offset);
 //                System.out.println(firstPart);
-                    String secondPart = currentTypedWord.substring(offset+1);
+                    String secondPart = currentlyTypedWord.substring(offset+1);
 //                System.out.println(secondPart);
-                    currentTypedWord = firstPart + secondPart;
+                   setCurrentTypedWord(firstPart + secondPart);
                 }
                 hud.setTextTypeArea(currentTypedWord);
             }
