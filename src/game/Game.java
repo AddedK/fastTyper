@@ -10,8 +10,6 @@ public class Game {
     private final HUD hud;
     private DocumentFilterListener typingListener;
     private String[] predictionArray;
-
-
     private int currentPredictedWordIndex;
     private String currentPredictedWord;
     private String currentTypedWord;
@@ -27,8 +25,8 @@ public class Game {
 
         setPredictionArray(createPredictionArray(predictionString));
         // Setup first predicted word
-        currentPredictedWordIndex = 0;
-        currentPredictedWord = this.predictionArray[currentPredictedWordIndex];
+        setCurrentPredictedWordIndex(0);
+        currentPredictedWord = this.predictionArray[getCurrentPredictedWordIndex()];
         setCurrentTypedWord("");
 
         hud = new HUD(visible);
@@ -60,9 +58,10 @@ public class Game {
      * This method decides what the next predicted word should be.
      */
     public void updateNextPredictedWord(){
-        currentPredictedWordIndex+=1;
-        if(currentPredictedWordIndex < predictionArray.length) {
-            this.currentPredictedWord = predictionArray[currentPredictedWordIndex];
+        setCurrentPredictedWordIndex(getCurrentPredictedWordIndex()+1);
+        int curPredWordIndex = getCurrentPredictedWordIndex();
+        if(curPredWordIndex < predictionArray.length) {
+            this.currentPredictedWord = predictionArray[curPredWordIndex];
         } else {
             System.out.println("There are no more words to predict!");
         }
@@ -123,11 +122,8 @@ public class Game {
                if(offset == currentlyTypedWord.length()) {
                    setCurrentTypedWord(currentlyTypedWord.substring(0,offset));
                 } else {
-//                System.out.print(currentTypedWord.length());
                     String firstPart = currentlyTypedWord.substring(0,offset);
-//                System.out.println(firstPart);
                     String secondPart = currentlyTypedWord.substring(offset+1);
-//                System.out.println(secondPart);
                    setCurrentTypedWord(firstPart + secondPart);
                 }
                 hud.setTextTypeArea(currentTypedWord);
@@ -157,10 +153,17 @@ public class Game {
         predictionArray = newPredictionArray;
     }
 
+    public int getCurrentPredictedWordIndex() {
+        return currentPredictedWordIndex;
+    }
+
+    public void setCurrentPredictedWordIndex(int currentPredictedWordIndex) {
+        this.currentPredictedWordIndex = currentPredictedWordIndex;
+    }
+
+
     public static void main(String[] args) {
-        // System.out.println("Hello, world!");
         String predictionString = "You are supposed to type this.\n This is a new line hahahaha.\n This is another line.";
         Game game = new Game(predictionString,true);
-
     }
 }
