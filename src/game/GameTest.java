@@ -163,7 +163,29 @@ class GameTest {
         assertEquals(gameCurrentTypedWord,"This is super cool!");
     }
 
+    /**
+     * CharactersTyped tests
+     */
 
+    @Test
+    public void testCharactersTyped1() {
+        String predictionString1 = "Party time.\nGreat.";
+        Game game = new Game(predictionString1,false);
+        int charactersTyped = game.getCharactersTyped();
+        assertEquals(0,charactersTyped);
+
+        game.updateNextPredictedWord();
+        charactersTyped = game.getCharactersTyped();
+        assertEquals(6,charactersTyped);
+
+        game.updateNextPredictedWord();
+        charactersTyped = game.getCharactersTyped();
+        assertEquals(12,charactersTyped);
+
+        game.updateNextPredictedWord();
+        charactersTyped = game.getCharactersTyped();
+        assertEquals(18,charactersTyped);
+    }
 
 
     @Test
