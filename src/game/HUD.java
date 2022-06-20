@@ -6,12 +6,19 @@ package game;
 import javax.swing.*;
 import javax.swing.JFrame;
 import javax.swing.text.AbstractDocument;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.Highlighter;
 import java.awt.*;
 
 public class HUD {
 
     private JTextArea typingArea; // Text area that  the user types into
     private JTextArea textAreaTarget; // Text area showing the text that the user must type.
+
+    private int targetSelectionStart;
+    private int targetSelectionEnd;
+
 
     public HUD(boolean visible) {
 
@@ -30,7 +37,7 @@ public class HUD {
         final int TEXT_AREA_TARGET_WIDTH = 250;
         final int TEXT_AREA_TARGET_HEIGHT = 70;
         final int TEXT_AREA_TARGET_ROWS = 2;
-        final int TEXT_AREA_TARGET_COLUMNS = 2;
+        final int TEXT_AREA_TARGET_COLUMNS = 1;
 
         // Jframe constants
         final int FRAME_WIDTH = 400;
@@ -48,12 +55,20 @@ public class HUD {
         textAreaTarget.setBounds(TEXT_AREA_TARGET_X,TEXT_AREA_TARGET_Y, TEXT_AREA_TARGET_WIDTH,TEXT_AREA_TARGET_HEIGHT);
 
 
+
         JButton b=new JButton("Click Here");
         b.setBounds(50,50,95,30);
 
         f.add(b);
         f.add(typingArea);
         f.add(textAreaTarget);
+//        setTargetSelectionStart(0);
+//        setTargetSelectionEnd(0);
+
+//        textAreaTarget.requestFocus();
+//        textAreaTarget.setSelectionStart(0);
+//        textAreaTarget.setSelectionEnd(5);
+//        textAreaTarget.setCaretPosition(1);
         f.setSize(FRAME_WIDTH,FRAME_HEIGHT);
         Point currentFramePosition = f.getLocation();
         // Shift the frame location so that the center of the frame is at the center of the screen.
@@ -62,8 +77,33 @@ public class HUD {
         f.setVisible(visible);
     }
 
+    public void clearTextTypeArea() {
+        typingArea.selectAll();
+        typingArea.replaceSelection("");
+    }
+    public void appendTextToTypeArea(String text) {
+        typingArea.append(text);
+    }
+
     public void setTextShowArea(String text) {
         textAreaTarget.setText(text);
+        textAreaTarget.setFont(textAreaTarget.getFont().deriveFont(15f));
+    }
+
+    /**
+     * Highlight the target text that the user has typed correctly
+     */
+    public void highlightText() {
+        // Help from https://stackoverflow.com/questions/5949524/highlight-sentence-in-textarea
+        // https://stackoverflow.com/questions/20341719/how-to-highlight-a-single-word-in-a-jtextarea
+        Highlighter h = textAreaTarget.getHighlighter();
+        h.removeAllHighlights();
+        try {
+            h.addHighlight(0 , getTargetSelectionEnd(), DefaultHighlighter.DefaultPainter);
+        } catch (BadLocationException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void setTextTypeArea(String text) {
@@ -74,12 +114,20 @@ public class HUD {
         ((AbstractDocument)this.typingArea.getDocument()).setDocumentFilter(dfl);
     }
 
-    public void clearTextTypeArea() {
-        typingArea.selectAll();
-        typingArea.replaceSelection("");
+    public int getTargetSelectionStart() {
+        return targetSelectionStart;
     }
-    public void appendTextToTypeArea(String text) {
-        typingArea.append(text);
+
+    public void setTargetSelectionStart(int targetSelectionStart) {
+        this.targetSelectionStart = targetSelectionStart;
+    }
+
+    public int getTargetSelectionEnd() {
+        return targetSelectionEnd;
+    }
+
+    public void setTargetSelectionEnd(int targetSelectionEnd) {
+        this.targetSelectionEnd = targetSelectionEnd;
     }
 
 }

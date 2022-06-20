@@ -78,7 +78,8 @@ public class Game {
                 curPredWordIndex = getCurrentPredictedWordIndex();
                 setCurrentPredictedWord(predictionArrayTemp[curPredWordIndex]);
             }
-
+            hud.setTargetSelectionEnd(getCharactersTyped());
+            hud.highlightText();
         }
 
     }
@@ -206,7 +207,7 @@ public class Game {
     }
 
     public static void main(String[] args) {
-        String predictionString = "You are supposed to type this.\n This is a new line hahahaha.\n This is another line.";
+        String predictionString = "You are supposed to type this.\nThis is a new line hahahaha.\nThis is another line.";
         Game game = new Game(predictionString,true);
     }
 }
