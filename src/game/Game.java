@@ -23,8 +23,6 @@ public class Game {
      * @param predictionString The target text the user must type.
      */
     public Game(String predictionString, boolean visible) {
-        // TODO: problem is that words that begin after newline are not aligned to the left, looks bad.
-
         setPredictionArray(createPredictionArray(predictionString));
         setCharactersTyped(0);
         setFinished(false);
