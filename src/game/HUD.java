@@ -62,13 +62,6 @@ public class HUD {
         f.add(b);
         f.add(typingArea);
         f.add(textAreaTarget);
-//        setTargetSelectionStart(0);
-//        setTargetSelectionEnd(0);
-
-//        textAreaTarget.requestFocus();
-//        textAreaTarget.setSelectionStart(0);
-//        textAreaTarget.setSelectionEnd(5);
-//        textAreaTarget.setCaretPosition(1);
         f.setSize(FRAME_WIDTH,FRAME_HEIGHT);
         Point currentFramePosition = f.getLocation();
         // Shift the frame location so that the center of the frame is at the center of the screen.
