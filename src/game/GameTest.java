@@ -64,6 +64,33 @@ class GameTest {
     }
 
     /**
+     * updateNextPredictedWord tests
+     */
+
+    @Test
+    public void testUpdateNextPredictedWord1() {
+        String predictionString1 = "I like to party.";
+
+        Game game = new Game(predictionString1,false);
+
+        String currentlyPredictedWord = game.getCurrentPredictedWord();
+        assertEquals(currentlyPredictedWord,"I ");
+
+        game.updateNextPredictedWord();
+        currentlyPredictedWord = game.getCurrentPredictedWord();
+        assertEquals(currentlyPredictedWord,"like ");
+
+        game.updateNextPredictedWord();
+        currentlyPredictedWord = game.getCurrentPredictedWord();
+        assertEquals(currentlyPredictedWord,"to ");
+
+        game.updateNextPredictedWord();
+        currentlyPredictedWord = game.getCurrentPredictedWord();
+        assertEquals(currentlyPredictedWord,"party.");
+    }
+
+
+    /**
      * CurrentPredictedWord tests
      */
 
