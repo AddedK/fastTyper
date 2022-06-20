@@ -6,6 +6,7 @@ package game;
 import javax.swing.*;
 import javax.swing.JFrame;
 import javax.swing.text.AbstractDocument;
+import java.awt.*;
 
 public class HUD {
 
@@ -30,7 +31,10 @@ public class HUD {
         f.add(b);
         f.add(typingArea);
         f.add(textAreaTarget);
-        f.setSize(400,800);
+        f.setSize(400,500);
+        Point currentFramePosition = f.getLocation();
+        // Shift the frame location so that the center of the frame is at the center of the screen.
+        f.setLocation((int) currentFramePosition.getX()- (400/2),(int)currentFramePosition.getY()-(500/2));
         f.setLayout(null);
         f.setVisible(visible);
     }
