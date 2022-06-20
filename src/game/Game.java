@@ -70,6 +70,7 @@ public class Game {
                 // We just finished typing the last word.
                 setFinished(true);
                 setCurrentPredictedWord(null);
+                setCurrentPredictedWordIndex(-1);
                 System.out.println("There are no more words to predict!");
             } else {
                 setCurrentPredictedWordIndex(getCurrentPredictedWordIndex()+1);
