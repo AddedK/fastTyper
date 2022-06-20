@@ -14,6 +14,7 @@ public class Game {
     private String currentPredictedWord;
     private String currentTypedWord;
     private boolean finished; // True if there are no more words to predict
+    private int charactersTyped; // The total number of characters of the words that the user has typed.
 
 
     /**
@@ -25,7 +26,7 @@ public class Game {
         // TODO: problem is that words that begin after newline are not aligned to the left, looks bad.
 
         setPredictionArray(createPredictionArray(predictionString));
-
+        setCharactersTyped(0);
         setFinished(false);
 
         hud = new HUD(visible);
@@ -33,6 +34,7 @@ public class Game {
 
         typingListener = new DocumentFilterListener(this);
         hud.setTypingAreaListener(typingListener);
+
     }
 
     /**
@@ -61,6 +63,9 @@ public class Game {
             throw new RuntimeException("There is no next predicted word!");
         } else {
             int curPredWordIndex = getCurrentPredictedWordIndex();
+            String currentPredictedWord = getCurrentPredictedWord();
+            int nrCharacters = currentPredictedWord.length();
+            setCharactersTyped(getCharactersTyped()+nrCharacters);
             String[] predictionArrayTemp = getPredictionArray();
             if(curPredWordIndex == predictionArrayTemp.length-1) {
                 // We just finished typing the last word.
@@ -190,6 +195,14 @@ public class Game {
 
     public void setFinished(boolean finished) {
         this.finished = finished;
+    }
+
+    public int getCharactersTyped() {
+        return charactersTyped;
+    }
+
+    public void setCharactersTyped(int charactersTyped) {
+        this.charactersTyped = charactersTyped;
     }
 
     public static void main(String[] args) {
