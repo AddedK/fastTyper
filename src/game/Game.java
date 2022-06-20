@@ -25,10 +25,6 @@ public class Game {
         // TODO: problem is that words that begin after newline are not aligned to the left, looks bad.
 
         setPredictionArray(createPredictionArray(predictionString));
-        // Setup first predicted word
-        setCurrentPredictedWordIndex(0);
-        setCurrentPredictedWord(getPredictionArray()[getCurrentPredictedWordIndex()]);
-        setCurrentTypedWord("");
 
         setFinished(false);
 
@@ -158,6 +154,10 @@ public class Game {
 
     public void setPredictionArray(String[] newPredictionArray) {
         predictionArray = newPredictionArray;
+        // Setup first predicted word
+        setCurrentPredictedWordIndex(0);
+        setCurrentPredictedWord(getPredictionArray()[getCurrentPredictedWordIndex()]);
+        setCurrentTypedWord("");
     }
 
     public int getCurrentPredictedWordIndex() {
