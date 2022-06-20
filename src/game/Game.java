@@ -58,10 +58,11 @@ public class Game {
      * This method decides what the next predicted word should be.
      */
     public void updateNextPredictedWord(){
-        setCurrentPredictedWordIndex(getCurrentPredictedWordIndex()+1);
-        String[] predictionArrayTemp = getPredictionArray();
         int curPredWordIndex = getCurrentPredictedWordIndex();
-        if(curPredWordIndex < predictionArrayTemp.length) {
+        String[] predictionArrayTemp = getPredictionArray();
+        if(curPredWordIndex < predictionArrayTemp.length-1) {
+            setCurrentPredictedWordIndex(getCurrentPredictedWordIndex()+1);
+            curPredWordIndex = getCurrentPredictedWordIndex();
             setCurrentPredictedWord(predictionArrayTemp[curPredWordIndex]);
         } else {
             System.out.println("There are no more words to predict!");
