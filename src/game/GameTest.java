@@ -112,6 +112,8 @@ class GameTest {
         game.updateNextPredictedWord();
         assertEquals(true,game.getFinished());
         assertNull(game.getCurrentPredictedWord());
+        currentlyPredictedWordIndex = game.getCurrentPredictedWordIndex();
+        assertEquals(-1,currentlyPredictedWordIndex);
 
 //        No more words to predict
         Exception exception = assertThrows(RuntimeException.class, () -> game.updateNextPredictedWord());
@@ -119,7 +121,7 @@ class GameTest {
         currentlyPredictedWord = game.getCurrentPredictedWord();
         assertNull(currentlyPredictedWord);
         currentlyPredictedWordIndex = game.getCurrentPredictedWordIndex();
-        assertEquals(1,currentlyPredictedWordIndex);
+        assertEquals(-1,currentlyPredictedWordIndex);
 
     }
 
