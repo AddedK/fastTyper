@@ -87,6 +87,40 @@ class GameTest {
         game.updateNextPredictedWord();
         currentlyPredictedWord = game.getCurrentPredictedWord();
         assertEquals(currentlyPredictedWord,"party.");
+
+        game.updateNextPredictedWord();
+
+        assertEquals(true,game.getFinished());
+        assertNull(game.getCurrentPredictedWord());
+    }
+
+    @Test
+    public void testUpdateNextPredictedWord2() {
+        String predictionString1 = "Party time.";
+
+        Game game = new Game(predictionString1,false);
+
+        String currentlyPredictedWord = game.getCurrentPredictedWord();
+        assertEquals(currentlyPredictedWord,"Party ");
+
+        game.updateNextPredictedWord();
+        currentlyPredictedWord = game.getCurrentPredictedWord();
+        assertEquals(currentlyPredictedWord,"time.");
+        int currentlyPredictedWordIndex = game.getCurrentPredictedWordIndex();
+        assertEquals(1,currentlyPredictedWordIndex);
+
+        game.updateNextPredictedWord();
+        assertEquals(true,game.getFinished());
+        assertNull(game.getCurrentPredictedWord());
+
+//        No more words to predict
+        Exception exception = assertThrows(RuntimeException.class, () -> game.updateNextPredictedWord());
+        assertEquals("There is no next predicted word!",exception.getMessage());
+        currentlyPredictedWord = game.getCurrentPredictedWord();
+        assertNull(currentlyPredictedWord);
+        currentlyPredictedWordIndex = game.getCurrentPredictedWordIndex();
+        assertEquals(1,currentlyPredictedWordIndex);
+
     }
 
 
