@@ -13,6 +13,7 @@ public class Game {
     private int currentPredictedWordIndex;
     private String currentPredictedWord;
     private String currentTypedWord;
+    private boolean finished; // True if there are no more words to predict
 
 
     /**
@@ -28,6 +29,8 @@ public class Game {
         setCurrentPredictedWordIndex(0);
         setCurrentPredictedWord(getPredictionArray()[getCurrentPredictedWordIndex()]);
         setCurrentTypedWord("");
+
+        setFinished(false);
 
         hud = new HUD(visible);
         hud.setTextShowArea(predictionString);
@@ -57,16 +60,25 @@ public class Game {
     /**
      * This method decides what the next predicted word should be.
      */
-    public void updateNextPredictedWord(){
-        int curPredWordIndex = getCurrentPredictedWordIndex();
-        String[] predictionArrayTemp = getPredictionArray();
-        if(curPredWordIndex < predictionArrayTemp.length-1) {
-            setCurrentPredictedWordIndex(getCurrentPredictedWordIndex()+1);
-            curPredWordIndex = getCurrentPredictedWordIndex();
-            setCurrentPredictedWord(predictionArrayTemp[curPredWordIndex]);
+    public void updateNextPredictedWord() throws RuntimeException{
+        if (getFinished()) {
+            throw new RuntimeException("There is no next predicted word!");
         } else {
-            System.out.println("There are no more words to predict!");
+            int curPredWordIndex = getCurrentPredictedWordIndex();
+            String[] predictionArrayTemp = getPredictionArray();
+            if(curPredWordIndex == predictionArrayTemp.length-1) {
+                // We just finished typing the last word.
+                setFinished(true);
+                setCurrentPredictedWord(null);
+                System.out.println("There are no more words to predict!");
+            } else {
+                setCurrentPredictedWordIndex(getCurrentPredictedWordIndex()+1);
+                curPredWordIndex = getCurrentPredictedWordIndex();
+                setCurrentPredictedWord(predictionArrayTemp[curPredWordIndex]);
+            }
+
         }
+
     }
 
 
@@ -169,6 +181,14 @@ public class Game {
 
     public void setCurrentTypedWord(String newTypedWord) {
         currentTypedWord = newTypedWord;
+    }
+
+    public boolean getFinished() {
+        return finished;
+    }
+
+    public void setFinished(boolean finished) {
+        this.finished = finished;
     }
 
     public static void main(String[] args) {
