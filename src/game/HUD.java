@@ -18,6 +18,7 @@ public class HUD {
     private int targetSelectionStart;
     private int targetSelectionEnd;
     private Highlighter h; // Highlighter for textTarget
+    private JLabel wordPerMinuteLabel;
 
 
     public HUD(boolean visible) {
@@ -69,10 +70,10 @@ public class HUD {
         f.setLayout(null);
 
         // From https://www.javatpoint.com/java-jlabel
-        JLabel l = new JLabel();
-        l.setText("label text");
-        l.setBounds(250,10, 100,50);
-        f.add(l);
+        this.wordPerMinuteLabel = new JLabel();
+        wordPerMinuteLabel.setText("label text");
+        wordPerMinuteLabel.setBounds(250,10, 100,50);
+        f.add(wordPerMinuteLabel);
 
         f.setVisible(visible);
         // From https://docs.oracle.com/javase/tutorial/uiswing/misc/focus.html
@@ -95,6 +96,10 @@ public class HUD {
     public void setTextShowArea(String text) {
         textAreaTarget.setText(text);
         textAreaTarget.setFont(textAreaTarget.getFont().deriveFont(15f));
+    }
+
+    public void setWordsPerMinuteText(String wordsPerMinute) {
+        this.wordPerMinuteLabel.setText(wordsPerMinute);
     }
 
     /**
