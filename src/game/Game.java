@@ -73,9 +73,8 @@ public class Game {
             String[] predictionArrayTemp = getPredictionArray();
             if(curPredWordIndex == predictionArrayTemp.length-1) {
                 // We just finished typing the last word.
-                setFinished(true);
                 this.finishTime = System.nanoTime() - this.startTime;
-                System.out.println("There are no more words to predict!");
+                setFinished(true);
                 setCurrentPredictedWord(null);
                 setCurrentPredictedWordIndex(-1);
                 showTimeResults();

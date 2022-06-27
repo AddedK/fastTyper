@@ -18,6 +18,7 @@ public class HUD {
 
     private int targetSelectionStart;
     private int targetSelectionEnd;
+    private Highlighter h; // Highlighter for textTarget
 
 
     public HUD(boolean visible) {
@@ -53,7 +54,7 @@ public class HUD {
 
         textAreaTarget=new JTextArea(TEXT_AREA_TARGET_ROWS,TEXT_AREA_TARGET_COLUMNS);
         textAreaTarget.setBounds(TEXT_AREA_TARGET_X,TEXT_AREA_TARGET_Y, TEXT_AREA_TARGET_WIDTH,TEXT_AREA_TARGET_HEIGHT);
-
+        h = textAreaTarget.getHighlighter();
 
 
         JButton b=new JButton("Click Here");
@@ -89,7 +90,6 @@ public class HUD {
     public void highlightText() {
         // Help from https://stackoverflow.com/questions/5949524/highlight-sentence-in-textarea
         // https://stackoverflow.com/questions/20341719/how-to-highlight-a-single-word-in-a-jtextarea
-        Highlighter h = textAreaTarget.getHighlighter();
         h.removeAllHighlights();
         try {
             h.addHighlight(0 , getTargetSelectionEnd(), DefaultHighlighter.DefaultPainter);
