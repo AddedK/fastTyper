@@ -5,10 +5,7 @@
 package game;
 import javax.swing.*;
 import javax.swing.JFrame;
-import javax.swing.text.AbstractDocument;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.DefaultHighlighter;
-import javax.swing.text.Highlighter;
+import javax.swing.text.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -51,13 +48,13 @@ public class HUD {
         // set JFrame in center of the screen
         f.setLocationRelativeTo(null);
 
+
         typingArea=new JTextArea(TYPING_AREA_TARGET_ROWS,TYPING_AREA_TARGET_COLUMNS);
         typingArea.setBounds(TYPING_AREA_TARGET_X,TYPING_AREA_TARGET_Y, TYPING_AREA_TARGET_WIDTH,TYPING_AREA_TARGET_HEIGHT);
 
         textAreaTarget=new JTextArea(TEXT_AREA_TARGET_ROWS,TEXT_AREA_TARGET_COLUMNS);
         textAreaTarget.setBounds(TEXT_AREA_TARGET_X,TEXT_AREA_TARGET_Y, TEXT_AREA_TARGET_WIDTH,TEXT_AREA_TARGET_HEIGHT);
         h = textAreaTarget.getHighlighter();
-
 
         JButton b=new JButton("Click Here");
         b.setBounds(50,50,95,30);
@@ -70,6 +67,13 @@ public class HUD {
         // Shift the frame location so that the center of the frame is at the center of the screen.
         f.setLocation((int) currentFramePosition.getX()- (FRAME_WIDTH/2),(int)currentFramePosition.getY()-(FRAME_HEIGHT/2));
         f.setLayout(null);
+
+        // From https://www.javatpoint.com/java-jlabel
+        JLabel l = new JLabel();
+        l.setText("label text");
+        l.setBounds(250,10, 100,50);
+        f.add(l);
+
         f.setVisible(visible);
         // From https://docs.oracle.com/javase/tutorial/uiswing/misc/focus.html
         //Make textField get the focus whenever frame is activated.
