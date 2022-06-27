@@ -15,6 +15,8 @@ public class Game {
     private String currentTypedWord;
     private boolean finished; // True if there are no more words to predict
     private int charactersTyped; // The total number of characters of the words that the user has typed.
+    private long startTime; // System.nanotime() when user is allowed to type
+    private long finishTime; // System.nanotime() return when user types the final word.
 
 
     /**
@@ -32,6 +34,10 @@ public class Game {
 
         typingListener = new DocumentFilterListener(this);
         hud.setTypingAreaListener(typingListener);
+
+        // Start timer
+        this.startTime = System.nanoTime();
+        this.finishTime = 0;
 
     }
 
@@ -68,9 +74,11 @@ public class Game {
             if(curPredWordIndex == predictionArrayTemp.length-1) {
                 // We just finished typing the last word.
                 setFinished(true);
+                this.finishTime = System.nanoTime() - this.startTime;
+                System.out.println("There are no more words to predict!");
                 setCurrentPredictedWord(null);
                 setCurrentPredictedWordIndex(-1);
-                System.out.println("There are no more words to predict!");
+                showTimeResults();
             } else {
                 setCurrentPredictedWordIndex(getCurrentPredictedWordIndex()+1);
                 curPredWordIndex = getCurrentPredictedWordIndex();
@@ -103,7 +111,7 @@ public class Game {
                     + currentlyTypedWord.substring(offset));
         }
 
-        System.out.println(String.format("CurrentTypedWord = %s",getCurrentTypedWord()));
+        System.out.printf("CurrentTypedWord = %s%n",getCurrentTypedWord());
 
         // Check if the current typed word is the one we are meant to predict
         currentlyTypedWord = getCurrentTypedWord();
@@ -146,6 +154,17 @@ public class Game {
         }
         typingListener.setListening(true);
 
+    }
+
+    /**
+     * This function prints the time taken in seconds and the words-per-minute.
+     * This function is called when the user has typed the final word.
+     */
+    public void showTimeResults() {
+        double timeInSeconds =  (double ) this.finishTime / 1000000000;
+        double wordsPerMinute =  ((double) this.predictionArray.length / timeInSeconds) * 60;
+        System.out.printf("It took %f seconds%n",timeInSeconds);
+        System.out.printf("Words per minute: %f%n",wordsPerMinute);
     }
 
     /**
@@ -204,8 +223,14 @@ public class Game {
         this.charactersTyped = charactersTyped;
     }
 
+    public long getTime() {
+        return System.nanoTime();
+    }
+
     public static void main(String[] args) {
-        String predictionString = "You are supposed to type this.\nThis is a new line hahahaha.\nThis is another line.";
-        Game game = new Game(predictionString,true);
+//        String longPredictionString = "You are supposed to type this.\nThis is a new line hahahaha.\nThis is another line.";
+        String shortPredictionString = "You are supposed to type this.\nThis is a new line.";
+        Game game = new Game(shortPredictionString,true);
+
     }
 }
