@@ -6,10 +6,16 @@
 
 package game;
 
+import javax.swing.*;
+import java.awt.event.ActionListener;
+import java.util.TimerTask;
+import java.util.Timer;
+
 public class Game {
     private final HUD hud;
     private DocumentFilterListener typingListener;
     private String[] predictionArray;
+    public int numberOfWordsCompleted;
     private int currentPredictedWordIndex;
     private String currentPredictedWord;
     private String currentTypedWord;
@@ -21,7 +27,7 @@ public class Game {
 
     /**
      * Game constructor. This fixes the predicted string and sets up the HUD that visualizes the text.
-     * It also create a document listener that notifies the Game class when a user types something.
+     * It also creates a document listener that notifies the Game class when a user types something.
      * @param predictionString The target text the user must type.
      */
     public Game(String predictionString, boolean visible) {
@@ -35,10 +41,26 @@ public class Game {
         typingListener = new DocumentFilterListener(this);
         hud.setTypingAreaListener(typingListener);
 
-        // Start timer
+        this.numberOfWordsCompleted = 0;
+        // Start countdown
         this.startTime = System.nanoTime();
         this.finishTime = 0;
 
+        // Add timer that updates word-per-minute label
+        TimerTask task = new TimerTask() {
+            public void run() {
+                if(!getFinished()) {
+                    System.out.println("Timer called");
+                    double timeInSeconds = nanoToSeconds(getTime()-startTime);
+                    System.out.println(timeInSeconds);
+                    double wordsPerMin = calculateWordsPerMinute(numberOfWordsCompleted,timeInSeconds);
+                    hud.setWordsPerMinuteText(Double.toString(wordsPerMin));
+                }
+            }
+        };
+        Timer timer = new Timer("timer");
+        long delay = 2000L;
+        timer.schedule(task, delay,delay);
     }
 
     /**
@@ -78,6 +100,9 @@ public class Game {
                 setCurrentPredictedWord(null);
                 setCurrentPredictedWordIndex(-1);
                 showTimeResults();
+                double timeInSeconds = nanoToSeconds(this.finishTime);
+                double wordsPerMin = calculateWordsPerMinute(numberOfWordsCompleted,timeInSeconds);
+                hud.setWordsPerMinuteText(Double.toString(wordsPerMin));
             } else {
                 setCurrentPredictedWordIndex(getCurrentPredictedWordIndex()+1);
                 curPredWordIndex = getCurrentPredictedWordIndex();
@@ -118,6 +143,7 @@ public class Game {
             System.out.println("You got it right!");
             hud.clearTextTypeArea();
             setCurrentTypedWord("");
+            numberOfWordsCompleted++;
             updateNextPredictedWord();
         } else {
             hud.setTextTypeArea(currentlyTypedWord);
@@ -160,8 +186,8 @@ public class Game {
      * This function is called when the user has typed the final word.
      */
     public void showTimeResults() {
-        double timeInSeconds =  (double ) this.finishTime / 1000000000;
-        double wordsPerMinute =  ((double) this.predictionArray.length / timeInSeconds) * 60;
+        double timeInSeconds = nanoToSeconds(this.finishTime);
+        double wordsPerMinute = calculateWordsPerMinute(numberOfWordsCompleted,timeInSeconds);
         System.out.printf("It took %f seconds%n",timeInSeconds);
         System.out.printf("Words per minute: %f%n",wordsPerMinute);
     }
@@ -224,6 +250,15 @@ public class Game {
 
     public long getTime() {
         return System.nanoTime();
+    }
+
+    public double nanoToSeconds(long nanoTime) {
+        return (double ) nanoTime / 1000000000;
+    }
+
+    public double calculateWordsPerMinute(int nrWords,double timeInSeconds) {
+        double wordsPerMinute =  ((double) nrWords / timeInSeconds) * 60;
+        return wordsPerMinute;
     }
 
     public static void main(String[] args) {
