@@ -10,6 +10,8 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class HUD {
 
@@ -69,6 +71,13 @@ public class HUD {
         f.setLocation((int) currentFramePosition.getX()- (FRAME_WIDTH/2),(int)currentFramePosition.getY()-(FRAME_HEIGHT/2));
         f.setLayout(null);
         f.setVisible(visible);
+        // From https://docs.oracle.com/javase/tutorial/uiswing/misc/focus.html
+        //Make textField get the focus whenever frame is activated.
+        f.addWindowFocusListener(new WindowAdapter() {
+            public void windowGainedFocus(WindowEvent e) {
+                typingArea.requestFocusInWindow();
+            }
+        });
     }
 
     public void clearTextTypeArea() {
