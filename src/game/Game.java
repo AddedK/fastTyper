@@ -24,7 +24,7 @@ public class Game {
     private long startTime; // System.nanotime() when user is allowed to type
     private long finishTime; // System.nanotime() return when user types the final word.
 
-    // TODO: When removing part of word, the caret is immediately put to the rightmost position which is bad.
+    // TODO: Ctrl + v puts caret position in offset, when it should be placed at the end
     /**
      * Game constructor. This fixes the predicted string and sets up the HUD that visualizes the text.
      * It also creates a document listener that notifies the Game class when a user types something.
@@ -121,9 +121,13 @@ public class Game {
      * @param offset where the user has typed something. Offset 0 means at the beginning.
      * @param text the string that the user has typed. Oftentimes a char.
      */
-    public void textWasReplaced(int offset, String text){
+    public void textWasReplaced(int offset, String text, int length){
         System.out.println("Text was replaced");
         String currentlyTypedWord = getCurrentTypedWord();
+        // This happens for example if the user is pasting in text, which is not allowed.
+        if(length != 1) {
+            throw new RuntimeException("Replacement text is not a single character!");
+        }
         // Appending char at end
         if (offset == currentlyTypedWord.length()) {
             setCurrentTypedWord(currentlyTypedWord+text);
