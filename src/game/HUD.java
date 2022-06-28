@@ -40,7 +40,7 @@ public class HUD {
         final int TEXT_AREA_TARGET_ROWS = 2;
         final int TEXT_AREA_TARGET_COLUMNS = 1;
 
-        // Jframe constants
+        // JFrame constants
         final int FRAME_WIDTH = 400;
         final int FRAME_HEIGHT = 500;
 
@@ -102,26 +102,55 @@ public class HUD {
         this.wordPerMinuteLabel.setText(wordsPerMinute);
     }
 
+
     /**
-     * Highlight the target text that the user has typed correctly
+     * Highlights the show area so that completed words are green, currently typed words are cyan and
+     * characters that are wrong are red.
+     * @param lastCompletedWordIndex The last character of the last fully typed word
+     * @param nrCorrectCharacters How many consecutive characters currentPredictedWord shares with currentTypedWord
+     * @param nrWrongCharacters How many currently typed characters are wrong
      */
-    public void highlightText(int lengthNextWord) {
+    public void highlightText(int lastCompletedWordIndex,int nrCorrectCharacters, int nrWrongCharacters) {
+        h.removeAllHighlights();
+        highlightCompletedText(lastCompletedWordIndex);
+        highlightCurrentAndPredictedWord(lastCompletedWordIndex,nrCorrectCharacters,nrWrongCharacters);
+    }
+
+    /**
+     * Highlight the target text words that the user has typed correctly
+     */
+    public void highlightCompletedText(int lastCompletedWordIndex) {
         // Help from https://stackoverflow.com/questions/5949524/highlight-sentence-in-textarea
         // https://stackoverflow.com/questions/20341719/how-to-highlight-a-single-word-in-a-jtextarea
-        h.removeAllHighlights();
-        // https://stackoverflow.com/questions/9650992/how-to-change-text-color-in-the-jtextarea
-        Highlighter.HighlightPainter cyanPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.cyan);
-        Highlighter.HighlightPainter redPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.red);
+        Highlighter.HighlightPainter greenPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.green);
         try {
-            // Highlight words that have already been typed
-            h.addHighlight(0 , getTargetSelectionEnd(), cyanPainter);
-            // Highlight the next word to be typed.
-            h.addHighlight(getTargetSelectionEnd(),getTargetSelectionEnd() + lengthNextWord,redPainter);
+            // Highlight words that are correctly typed
+            h.addHighlight(0 , lastCompletedWordIndex, greenPainter);
         } catch (BadLocationException e) {
             e.printStackTrace();
         }
-
     }
+
+    /**
+     * Highlight the currently predicted word and how much of the word the user has typed correctly
+     */
+    public void highlightCurrentAndPredictedWord(int lastCompletedWordIndex,int nrCorrectCharacters, int nrWrongCharacters) {
+        // Help from https://stackoverflow.com/questions/5949524/highlight-sentence-in-textarea
+        // https://stackoverflow.com/questions/20341719/how-to-highlight-a-single-word-in-a-jtextarea
+        Highlighter.HighlightPainter cyanPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.cyan);
+        Highlighter.HighlightPainter redPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.red);
+        try {
+            // Highlight the currently correctly typed characters cyan
+            h.addHighlight(lastCompletedWordIndex ,lastCompletedWordIndex + nrCorrectCharacters, cyanPainter);
+            // Highlight the currently incorrectly typed characters red
+            h.addHighlight(lastCompletedWordIndex + nrCorrectCharacters,
+                    lastCompletedWordIndex + nrCorrectCharacters + nrWrongCharacters,
+                    redPainter);
+        } catch (BadLocationException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public void highlightNextWord() {
         Highlighter nextWordHighlighter = textAreaTarget.getHighlighter();

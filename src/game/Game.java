@@ -21,10 +21,10 @@ public class Game {
     private String currentTypedWord;
     private boolean finished; // True if there are no more words to predict
     private int charactersTyped; // The total number of characters of the words that the user has typed.
+    private int lastCorrectWordIndex; // The index of the last character in the most recently correctly typed word.
     private long startTime; // System.nanotime() when user is allowed to type
     private long finishTime; // System.nanotime() return when user types the final word.
 
-    // TODO: Ctrl + v puts caret position in offset, when it should be placed at the end
     /**
      * Game constructor. This fixes the predicted string and sets up the HUD that visualizes the text.
      * It also creates a document listener that notifies the Game class when a user types something.
@@ -33,6 +33,7 @@ public class Game {
     public Game(String predictionString, boolean visible) {
         setPredictionArray(createPredictionArray(predictionString));
         setCharactersTyped(0);
+        setLastCorrectWordIndex(0);
         setFinished(false);
 
         hud = new HUD(visible);
@@ -40,7 +41,7 @@ public class Game {
 
         typingListener = new DocumentFilterListener(this);
         hud.setTypingAreaListener(typingListener);
-        hud.highlightText(currentPredictedWord.length());
+        hud.highlightCompletedText(0);
 
         this.numberOfWordsCompleted = 0;
         // Start countdown
@@ -91,6 +92,7 @@ public class Game {
             String currentPredictedWord = getCurrentPredictedWord();
             int nrCharacters = currentPredictedWord.length();
             setCharactersTyped(getCharactersTyped()+nrCharacters);
+            setLastCorrectWordIndex(getLastCorrectWordIndex() + nrCharacters);
             String[] predictionArrayTemp = getPredictionArray();
             if(curPredWordIndex == predictionArrayTemp.length-1) {
                 // We just finished typing the last word.
@@ -100,15 +102,13 @@ public class Game {
                 setCurrentPredictedWordIndex(-1);
                 showTimeResults();
                 updateWPMDisplay(this.finishTime);
-                hud.setTargetSelectionEnd(getCharactersTyped());
-                hud.highlightText(0);
             } else {
                 setCurrentPredictedWordIndex(getCurrentPredictedWordIndex()+1);
                 curPredWordIndex = getCurrentPredictedWordIndex();
                 setCurrentPredictedWord(predictionArrayTemp[curPredWordIndex]);
-                hud.setTargetSelectionEnd(getCharactersTyped());
-                hud.highlightText(getCurrentPredictedWord().length());
             }
+            hud.setTargetSelectionEnd(getCharactersTyped());
+            updateCurrentWordHighlighting();
         }
 
     }
@@ -148,7 +148,8 @@ public class Game {
             updateNextPredictedWord();
         } else {
             hud.setTextTypeArea(currentlyTypedWord);
-            this.hud.setTypingAreaCaretPosition(offset+1);
+            hud.setTypingAreaCaretPosition(offset+1);
+            updateCurrentWordHighlighting();
         }
         typingListener.setListening(true);
     }
@@ -159,15 +160,16 @@ public class Game {
      * @param length the length of the text that is being removed.
      */
     public void textWasRemoved(int offset, int length) {
-        System.out.println(" " + offset + " " + length);
+//        System.out.println(" " + offset + " " + length);
         String currentlyTypedWord = getCurrentTypedWord();
         if(!currentlyTypedWord.equals("")) {
-            // Remove from CurrentlyTyped word the text between offset and offset+length+1
+            // Remove from CurrentlyTyped word the text between offset and offset+length
             String firstPart = currentlyTypedWord.substring(0,offset);
             String secondPart = currentlyTypedWord.substring(offset+length);
             setCurrentTypedWord(firstPart + secondPart);
             hud.setTextTypeArea(currentTypedWord);
             this.hud.setTypingAreaCaretPosition(offset);
+            updateCurrentWordHighlighting();
         }
         typingListener.setListening(true);
 
@@ -192,6 +194,35 @@ public class Game {
         double elapsedTimeInSeconds = nanoToSeconds(currentTime-startTime);
         double wordsPerMin = calculateWordsPerMinute(numberOfWordsCompleted,elapsedTimeInSeconds);
         hud.setWordsPerMinuteText("wpm: " + Double.toString(roundTwoDecimals(wordsPerMin)));
+    }
+
+    /**
+     * Sends parameters to HUD to highlight the currently typed word
+     */
+    public void updateCurrentWordHighlighting() {
+        int nrCorrectCharacters = 0;
+        int nrWrongCharacters = 0;
+
+        String currentPredictedWord = getCurrentPredictedWord();
+        String currentTypedWord = getCurrentTypedWord();
+        // Have to check against null we might be finished
+        if (currentPredictedWord != null) {
+            int predictedWordLength = currentPredictedWord.length();
+            int currentWordLength = currentTypedWord.length();
+            int minLength = Math.min(predictedWordLength, currentWordLength);
+
+            for (int i = 0; i < minLength; i++) {
+                if (currentPredictedWord.charAt(i) == currentTypedWord.charAt(i)) {
+                    nrCorrectCharacters++;
+                } else {
+                    break;
+                }
+            }
+
+            nrWrongCharacters = currentTypedWord.length() - nrCorrectCharacters;
+        }
+
+        hud.highlightText(getLastCorrectWordIndex(),nrCorrectCharacters,nrWrongCharacters);
     }
 
     /**
@@ -244,6 +275,14 @@ public class Game {
 
     public void setFinished(boolean finished) {
         this.finished = finished;
+    }
+
+    public int getLastCorrectWordIndex() {
+        return lastCorrectWordIndex;
+    }
+
+    public void setLastCorrectWordIndex(int lastCorrectWordIndex) {
+        this.lastCorrectWordIndex = lastCorrectWordIndex;
     }
 
     public int getCharactersTyped() {
