@@ -15,8 +15,6 @@ public class HUD {
     private JTextArea typingArea; // Text area that  the user types into
     private JTextArea textAreaTarget; // Text area showing the text that the user must type.
 
-    private int targetSelectionStart;
-    private int targetSelectionEnd;
     private Highlighter h; // Highlighter for textTarget
     private JLabel wordPerMinuteLabel;
 
@@ -165,21 +163,6 @@ public class HUD {
         ((AbstractDocument)this.typingArea.getDocument()).setDocumentFilter(dfl);
     }
 
-    public int getTargetSelectionStart() {
-        return targetSelectionStart;
-    }
-
-    public void setTargetSelectionStart(int targetSelectionStart) {
-        this.targetSelectionStart = targetSelectionStart;
-    }
-
-    public int getTargetSelectionEnd() {
-        return targetSelectionEnd;
-    }
-
-    public void setTargetSelectionEnd(int targetSelectionEnd) {
-        this.targetSelectionEnd = targetSelectionEnd;
-    }
 
     public void setTypingAreaCaretPosition(int position) {
         this.typingArea.setCaretPosition(position);

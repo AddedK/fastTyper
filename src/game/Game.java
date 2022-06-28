@@ -107,7 +107,6 @@ public class Game {
                 curPredWordIndex = getCurrentPredictedWordIndex();
                 setCurrentPredictedWord(predictionArrayTemp[curPredWordIndex]);
             }
-            hud.setTargetSelectionEnd(getCharactersTyped());
             updateCurrentWordHighlighting();
         }
 
