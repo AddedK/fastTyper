@@ -2,6 +2,8 @@ package game;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.concurrent.TimeUnit;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameTest {
@@ -185,6 +187,27 @@ class GameTest {
         game.updateNextPredictedWord();
         charactersTyped = game.getCharactersTyped();
         assertEquals(18,charactersTyped);
+    }
+
+    @Test
+    public void calculateWordsPerMinute1() throws InterruptedException {
+        // 1 word / 4 second =  15 words / minute
+        String predictionString1 = "Party.";
+        double delta = 0.1;
+        Game game = new Game(predictionString1,false);
+
+        // Wait 5 seconds before getting the next word
+        Thread.sleep(4000);
+        game.updateNextPredictedWord();
+
+        assertEquals(true,game.getFinished());
+        int numberWordsFinished = game.getNumberOfWordsCompleted();
+        assertEquals(1,numberWordsFinished);
+        double timeInSeconds = game.nanoToSeconds(game.getFinishTime()-game.getStartTime());
+        double wordsPerMin = game.calculateWordsPerMinute(numberWordsFinished,timeInSeconds);
+
+        assertEquals(true,Math.abs(wordsPerMin-15) <= delta);
+        assertEquals(true,wordsPerMin >= 12);
     }
 
 

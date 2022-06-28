@@ -51,10 +51,8 @@ public class Game {
         TimerTask task = new TimerTask() {
             public void run() {
                 if(!getFinished()) {
-                    double timeInSeconds = nanoToSeconds(getTime()-startTime);
-                    System.out.println(timeInSeconds);
-                    double wordsPerMin = calculateWordsPerMinute(numberOfWordsCompleted,timeInSeconds);
-                    hud.setWordsPerMinuteText("wpm: " + Double.toString(wordsPerMin));
+                    long currentTime = System.nanoTime();
+                    updateWPMDisplay(currentTime);
                 }
             }
         };
@@ -96,14 +94,12 @@ public class Game {
             String[] predictionArrayTemp = getPredictionArray();
             if(curPredWordIndex == predictionArrayTemp.length-1) {
                 // We just finished typing the last word.
-                this.finishTime = System.nanoTime() - this.startTime;
+                this.finishTime = System.nanoTime();
                 setFinished(true);
                 setCurrentPredictedWord(null);
                 setCurrentPredictedWordIndex(-1);
                 showTimeResults();
-                double timeInSeconds = nanoToSeconds(this.finishTime);
-                double wordsPerMin = calculateWordsPerMinute(numberOfWordsCompleted,timeInSeconds);
-                hud.setWordsPerMinuteText("wpm:" + Double.toString(wordsPerMin));
+                updateWPMDisplay(this.finishTime);
             } else {
                 setCurrentPredictedWordIndex(getCurrentPredictedWordIndex()+1);
                 curPredWordIndex = getCurrentPredictedWordIndex();
@@ -186,10 +182,20 @@ public class Game {
      * This function is called when the user has typed the final word.
      */
     public void showTimeResults() {
-        double timeInSeconds = nanoToSeconds(this.finishTime);
+        double timeInSeconds = nanoToSeconds(this.finishTime-this.startTime);
         double wordsPerMinute = calculateWordsPerMinute(numberOfWordsCompleted,timeInSeconds);
         System.out.printf("It took %f seconds%n",timeInSeconds);
         System.out.printf("Words per minute: %f%n",wordsPerMinute);
+    }
+
+    /**
+     * Calculates the current time and wpm and calls hud to update wpm display.
+     * @param currentTime The current nanotime when the function is called
+     */
+    public void updateWPMDisplay(long currentTime) {
+        double elapsedTimeInSeconds = nanoToSeconds(currentTime-startTime);
+        double wordsPerMin = calculateWordsPerMinute(numberOfWordsCompleted,elapsedTimeInSeconds);
+        hud.setWordsPerMinuteText("wpm: " + Double.toString(roundTwoDecimals(wordsPerMin)));
     }
 
     /**
@@ -206,6 +212,10 @@ public class Game {
         setCurrentPredictedWordIndex(0);
         setCurrentPredictedWord(getPredictionArray()[getCurrentPredictedWordIndex()]);
         setCurrentTypedWord("");
+    }
+
+    public int getNumberOfWordsCompleted() {
+        return numberOfWordsCompleted;
     }
 
     public int getCurrentPredictedWordIndex() {
@@ -248,9 +258,16 @@ public class Game {
         this.charactersTyped = charactersTyped;
     }
 
-    public long getTime() {
-        return System.nanoTime();
+    public long getStartTime() {
+        return startTime;
     }
+    public long getFinishTime() {
+        return finishTime;
+    }
+
+    /**
+     * Time and math functions
+     */
 
     public double nanoToSeconds(long nanoTime) {
         return (double ) nanoTime / 1000000000;
@@ -260,6 +277,13 @@ public class Game {
         double wordsPerMinute =  ((double) nrWords / timeInSeconds) * 60;
         return wordsPerMinute;
     }
+
+    public double roundTwoDecimals(double num) {
+        double result = Math.round(num * 100);
+        return result/100;
+    }
+
+
 
     public static void main(String[] args) {
 //        String longPredictionString = "You are supposed to type this.\nThis is a new line hahahaha.\nThis is another line.";
