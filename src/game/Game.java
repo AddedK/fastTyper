@@ -120,6 +120,7 @@ public class Game {
      * @param text the string that the user has typed. Oftentimes a char.
      */
     public void textWasReplaced(int offset, String text){
+        typingListener.setListening(false);
         int textLength = text.length();
 //        System.out.println("Text was replaced");
         String currentlyTypedWord = getCurrentTypedWord();
@@ -158,6 +159,7 @@ public class Game {
      * @param length the length of the text that is being removed.
      */
     public void textWasRemoved(int offset, int length) {
+        typingListener.setListening(false);
         String currentlyTypedWord = getCurrentTypedWord();
         if(!currentlyTypedWord.equals("")) {
             // Remove from CurrentlyTyped word the text between offset and offset+length

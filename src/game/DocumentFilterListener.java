@@ -39,7 +39,6 @@ public class DocumentFilterListener extends DocumentFilter {
     @Override
     public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
         if (listening) {
-            setListening(false);
             game.textWasReplaced(offset,text);
 //            System.out.println("Listened to replace");
         } else {
@@ -55,7 +54,6 @@ public class DocumentFilterListener extends DocumentFilter {
 
         //Offset tells us which char was removed
         if (listening) {
-            setListening(false);
             game.textWasRemoved(offset,length);
 //            System.out.println("Listened to remove");
         } else {
