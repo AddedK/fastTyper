@@ -144,7 +144,6 @@ public class Game {
         } else {
             hud.setTextTypeArea(currentlyTypedWord);
             this.hud.setTypingAreaCaretPosition(offset+1);
-
         }
         typingListener.setListening(true);
     }
@@ -163,6 +162,7 @@ public class Game {
             String secondPart = currentlyTypedWord.substring(offset+length);
             setCurrentTypedWord(firstPart + secondPart);
             hud.setTextTypeArea(currentTypedWord);
+            this.hud.setTypingAreaCaretPosition(offset);
         }
         typingListener.setListening(true);
 
