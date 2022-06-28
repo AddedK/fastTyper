@@ -12,7 +12,7 @@ class GameTest {
      * CreatePredictionArray tests
      */
     @Test
-    public void testCreatePredictionArray1() {
+    public void testCreatePredictionArrayOneSentence1() {
         String string1 = "I like to party.";
         String[] answer1 = {"I ", "like ", "to ", "party."};
         String[] prediction1 = Game.createPredictionArray(string1);
@@ -21,7 +21,7 @@ class GameTest {
     }
 
     @Test
-    public void testCreatePredictionArray2() {
+    public void testCreatePredictionArrayMultipleSentences1() {
         String string1 = "I like to party.\nThis is great.\nSuper fun.";
         String[] answer1 = {"I ", "like ", "to ", "party. ", "This ","is ","great. ","Super ","fun."};
         String[] prediction1 = Game.createPredictionArray(string1);
@@ -51,10 +51,7 @@ class GameTest {
      */
 
     @Test
-    public void testGetSetCurrentPredictedWordIndex1() {
-        String predictionString1 = "Party";
-        String predictionString2 = "Dance";
-
+    public void testGetSetCurrentPredictedWordIndexOneWord() {
         Game game = new Game("",false);
         int gameCurrentlyPredictedWordIndex1 = game.getCurrentPredictedWordIndex();
         assertEquals(gameCurrentlyPredictedWordIndex1,0);
@@ -69,7 +66,7 @@ class GameTest {
      */
 
     @Test
-    public void testUpdateNextPredictedWord1() {
+    public void testUpdateNextPredictedWordSimple1() {
         String predictionString1 = "I like to party.";
 
         Game game = new Game(predictionString1,false);
@@ -96,7 +93,7 @@ class GameTest {
     }
 
     @Test
-    public void testUpdateNextPredictedWord2() {
+    public void testUpdateNextPredictedWordLarger1() {
         String predictionString1 = "Party time.";
 
         Game game = new Game(predictionString1,false);
@@ -105,12 +102,14 @@ class GameTest {
         assertEquals(currentlyPredictedWord,"Party ");
 
         game.updateNextPredictedWord();
+
         currentlyPredictedWord = game.getCurrentPredictedWord();
         assertEquals(currentlyPredictedWord,"time.");
         int currentlyPredictedWordIndex = game.getCurrentPredictedWordIndex();
         assertEquals(1,currentlyPredictedWordIndex);
 
         game.updateNextPredictedWord();
+
         assertEquals(true,game.getFinished());
         assertNull(game.getCurrentPredictedWord());
         currentlyPredictedWordIndex = game.getCurrentPredictedWordIndex();
@@ -132,7 +131,7 @@ class GameTest {
      */
 
     @Test
-    public void testGetSetCurrentPredictedWord1() {
+    public void testGetSetCurrentPredictedWordSimple1() {
         String predictionString1 = "Party";
         String predictionString2 = "Dance";
 
@@ -152,7 +151,7 @@ class GameTest {
      */
 
     @Test
-    public void testCurrentTypedWord1() {
+    public void testCurrentTypedWordSimple1() {
         Game game = new Game("",false);
         game.setCurrentTypedWord("");
 
@@ -169,7 +168,7 @@ class GameTest {
      */
 
     @Test
-    public void testCharactersTyped1() {
+    public void testCharactersTypedSimple1() {
         String predictionString1 = "Party time.\nGreat.";
         Game game = new Game(predictionString1,false);
         int charactersTyped = game.getCharactersTyped();
@@ -189,7 +188,7 @@ class GameTest {
     }
 
     @Test
-    public void testLastCorrectWordIndex1() {
+    public void testLastCorrectWordIndexSimple1() {
         String predictionString1 = "Party time.\nGreat.";
         Game game = new Game(predictionString1,false);
         int lastCorrectWordIndex = game.getLastCorrectWordIndex();
@@ -209,7 +208,7 @@ class GameTest {
     }
 
     @Test
-    public void calculateWordsPerMinute1() throws InterruptedException {
+    public void calculateWordsPerMinuteOneWord1() throws InterruptedException {
         // 1 word / 4 second =  15 words / minute
         String predictionString1 = "Party.";
         double delta = 0.1;
