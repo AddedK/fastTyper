@@ -12,7 +12,6 @@ import java.util.TimerTask;
 import java.util.Timer;
 
 public class Game {
-    // TODO: Highlight next predicted word
     private final HUD hud;
     private DocumentFilterListener typingListener;
     private String[] predictionArray;
@@ -157,24 +156,14 @@ public class Game {
      * @param length the length of the text that is being removed.
      */
     public void textWasRemoved(int offset, int length) {
+        System.out.println(" " + offset + " " + length);
         String currentlyTypedWord = getCurrentTypedWord();
         if(!currentlyTypedWord.equals("")) {
-            // This means we are removing the entire word
-            if (length == currentlyTypedWord.length()) {
-                this.hud.clearTextTypeArea();
-                setCurrentTypedWord("");
-            }
-           else {
-               // Removing the last character
-               if(offset == currentlyTypedWord.length()) {
-                   setCurrentTypedWord(currentlyTypedWord.substring(0,offset));
-                } else {
-                    String firstPart = currentlyTypedWord.substring(0,offset);
-                    String secondPart = currentlyTypedWord.substring(offset+1);
-                   setCurrentTypedWord(firstPart + secondPart);
-                }
-                hud.setTextTypeArea(currentTypedWord);
-            }
+            // Remove from CurrentlyTyped word the text between offset and offset+length+1
+            String firstPart = currentlyTypedWord.substring(0,offset);
+            String secondPart = currentlyTypedWord.substring(offset+length);
+            setCurrentTypedWord(firstPart + secondPart);
+            hud.setTextTypeArea(currentTypedWord);
         }
         typingListener.setListening(true);
 

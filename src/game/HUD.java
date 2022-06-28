@@ -116,7 +116,6 @@ public class HUD {
             // Highlight words that have already been typed
             h.addHighlight(0 , getTargetSelectionEnd(), cyanPainter);
             // Highlight the next word to be typed.
-            System.out.printf("LengthNextWord = %d", lengthNextWord);
             h.addHighlight(getTargetSelectionEnd(),getTargetSelectionEnd() + lengthNextWord,redPainter);
         } catch (BadLocationException e) {
             e.printStackTrace();
