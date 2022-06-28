@@ -190,6 +190,26 @@ class GameTest {
     }
 
     @Test
+    public void testLastCorrectWordIndex1() {
+        String predictionString1 = "Party time.\nGreat.";
+        Game game = new Game(predictionString1,false);
+        int lastCorrectWordIndex = game.getLastCorrectWordIndex();
+        assertEquals(0,lastCorrectWordIndex);
+
+        game.updateNextPredictedWord();
+        lastCorrectWordIndex = game.getLastCorrectWordIndex();
+        assertEquals(6,lastCorrectWordIndex);
+
+        game.updateNextPredictedWord();
+        lastCorrectWordIndex = game.getLastCorrectWordIndex();
+        assertEquals(12,lastCorrectWordIndex);
+
+        game.updateNextPredictedWord();
+        lastCorrectWordIndex = game.getLastCorrectWordIndex();
+        assertEquals(18,lastCorrectWordIndex);
+    }
+
+    @Test
     public void calculateWordsPerMinute1() throws InterruptedException {
         // 1 word / 4 second =  15 words / minute
         String predictionString1 = "Party.";
