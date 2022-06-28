@@ -126,7 +126,6 @@ public class Game {
         String currentlyTypedWord = getCurrentTypedWord();
         // Appending char at end
         if (offset == currentlyTypedWord.length()) {
-            hud.appendTextToTypeArea(text);
             setCurrentTypedWord(currentlyTypedWord+text);
         } else {
             setCurrentTypedWord(currentlyTypedWord.substring(0, offset)
