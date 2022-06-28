@@ -7,7 +7,6 @@
 package game;
 
 import javax.swing.*;
-import java.awt.event.ActionListener;
 import java.util.TimerTask;
 import java.util.Timer;
 
@@ -59,7 +58,7 @@ public class Game {
         };
         Timer timer = new Timer("timer");
         long delay = 2000L;
-        timer.schedule(task, delay,delay);
+        timer.schedule(task, delay, delay);
     }
 
     /**
@@ -74,8 +73,8 @@ public class Game {
         for (int i = 0; i < predictionArray.length-1; i++) {
             predictionArray[i] += " ";
         }
-        for (int i = 0; i < predictionArray.length; i++) {
-            System.out.print(predictionArray[i]);
+        for (String s : predictionArray) {
+            System.out.print(s);
         }
         return predictionArray;
     }
@@ -159,7 +158,6 @@ public class Game {
      * @param length the length of the text that is being removed.
      */
     public void textWasRemoved(int offset, int length) {
-//        System.out.println(" " + offset + " " + length);
         String currentlyTypedWord = getCurrentTypedWord();
         if(!currentlyTypedWord.equals("")) {
             // Remove from CurrentlyTyped word the text between offset and offset+length
@@ -192,7 +190,7 @@ public class Game {
     public void updateWPMDisplay(long currentTime) {
         double elapsedTimeInSeconds = nanoToSeconds(currentTime-startTime);
         double wordsPerMin = calculateWordsPerMinute(numberOfWordsCompleted,elapsedTimeInSeconds);
-        hud.setWordsPerMinuteText("wpm: " + Double.toString(roundTwoDecimals(wordsPerMin)));
+        hud.setWordsPerMinuteText("wpm: " + roundTwoDecimals(wordsPerMin));
     }
 
     /**
@@ -204,7 +202,7 @@ public class Game {
 
         String currentPredictedWord = getCurrentPredictedWord();
         String currentTypedWord = getCurrentTypedWord();
-        // Have to check against null we might be finished
+        // Have to check against null in case there are no more words to predict
         if (currentPredictedWord != null) {
             int predictedWordLength = currentPredictedWord.length();
             int currentWordLength = currentTypedWord.length();
@@ -308,8 +306,7 @@ public class Game {
     }
 
     public double calculateWordsPerMinute(int nrWords,double timeInSeconds) {
-        double wordsPerMinute =  ((double) nrWords / timeInSeconds) * 60;
-        return wordsPerMinute;
+        return ((double) nrWords / timeInSeconds) * 60;
     }
 
     public double roundTwoDecimals(double num) {
