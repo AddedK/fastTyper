@@ -34,7 +34,6 @@ class GameTest {
     @Test
     public void testGetSetPredictionArray1() {
         String[] answerEmpty = {""};
-        String predictionString1 = "I like to party.\nThis is great.\nSuper fun.";
         String[] answer1 = {"I ", "like ", "to ", "party. ", "This ","is ","great. ","Super ","fun."};
 
         Game game = new Game("",false);
@@ -88,7 +87,7 @@ class GameTest {
 
         game.updateNextPredictedWord();
 
-        assertEquals(true,game.getFinished());
+        assertTrue(game.getFinished());
         assertNull(game.getCurrentPredictedWord());
     }
 
@@ -110,7 +109,7 @@ class GameTest {
 
         game.updateNextPredictedWord();
 
-        assertEquals(true,game.getFinished());
+        assertTrue(game.getFinished());
         assertNull(game.getCurrentPredictedWord());
         currentlyPredictedWordIndex = game.getCurrentPredictedWordIndex();
         assertEquals(-1,currentlyPredictedWordIndex);
@@ -218,14 +217,14 @@ class GameTest {
         Thread.sleep(4000);
         game.updateNextPredictedWord();
 
-        assertEquals(true,game.getFinished());
+        assertTrue(game.getFinished());
         int numberWordsFinished = game.getNumberOfWordsCompleted();
         assertEquals(1,numberWordsFinished);
         double timeInSeconds = game.nanoToSeconds(game.getFinishTime()-game.getStartTime());
         double wordsPerMin = game.calculateWordsPerMinute(numberWordsFinished,timeInSeconds);
 
-        assertEquals(true,Math.abs(wordsPerMin-15) <= delta);
-        assertEquals(true,wordsPerMin >= 12);
+        assertTrue(Math.abs(wordsPerMin-15) <= delta);
+        assertTrue(wordsPerMin >= 12);
     }
 
 
