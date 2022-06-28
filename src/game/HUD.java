@@ -152,4 +152,7 @@ public class HUD {
         this.targetSelectionEnd = targetSelectionEnd;
     }
 
+    public void setTypingAreaCaretPosition(int position) {
+        this.typingArea.setCaretPosition(position);
+    }
 }
