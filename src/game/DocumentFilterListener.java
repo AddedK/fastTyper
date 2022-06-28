@@ -32,7 +32,7 @@ public class DocumentFilterListener extends DocumentFilter {
 
     @Override
     public void insertString(FilterBypass fb, int offset, String text, AttributeSet attr) throws BadLocationException {
-        System.out.println("inserting");
+//        System.out.println("inserting");
         super.insertString(fb, offset, text, attr);
     }
 
@@ -41,8 +41,7 @@ public class DocumentFilterListener extends DocumentFilter {
         if (listening) {
             setListening(false);
             game.textWasReplaced(offset,text);
-            // super.replace(fb, offset, length, text, attrs);
-            System.out.println("Listened to replace");
+//            System.out.println("Listened to replace");
         } else {
             super.replace(fb, offset, length, text, attrs);
         }
@@ -51,14 +50,14 @@ public class DocumentFilterListener extends DocumentFilter {
 
     @Override
     public void remove(FilterBypass fb, int offset, int length) throws BadLocationException {
-        System.out.println(String.format("offset = %d",offset));
-        System.out.println(String.format("length removed = %d",length));
+//        System.out.println(String.format("offset = %d",offset));
+//        System.out.println(String.format("length removed = %d",length));
 
         //Offset tells us which char was removed
         if (listening) {
             setListening(false);
             game.textWasRemoved(offset,length);
-            System.out.println("Listened to remove");
+//            System.out.println("Listened to remove");
         } else {
             super.remove(fb, offset, length);
         }

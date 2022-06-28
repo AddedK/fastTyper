@@ -121,11 +121,12 @@ public class Game {
      * @param offset where the user has typed something. Offset 0 means at the beginning.
      * @param text the string that the user has typed. Oftentimes a char.
      */
-    public void textWasReplaced(int offset, String text, int length){
-        System.out.println("Text was replaced");
+    public void textWasReplaced(int offset, String text){
+        int textLength = text.length();
+//        System.out.println("Text was replaced");
         String currentlyTypedWord = getCurrentTypedWord();
         // This happens for example if the user is pasting in text, which is not allowed.
-        if(length != 1) {
+        if(textLength != 1) {
             throw new RuntimeException("Replacement text is not a single character!");
         }
         // Appending char at end
