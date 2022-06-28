@@ -12,7 +12,7 @@ import java.util.TimerTask;
 import java.util.Timer;
 
 public class Game {
-    // TODO: Comment newly added code. Add unit tests.
+    // TODO: Highlight next predicted word
     private final HUD hud;
     private DocumentFilterListener typingListener;
     private String[] predictionArray;
@@ -41,6 +41,7 @@ public class Game {
 
         typingListener = new DocumentFilterListener(this);
         hud.setTypingAreaListener(typingListener);
+        hud.highlightText(currentPredictedWord.length());
 
         this.numberOfWordsCompleted = 0;
         // Start countdown
@@ -100,13 +101,15 @@ public class Game {
                 setCurrentPredictedWordIndex(-1);
                 showTimeResults();
                 updateWPMDisplay(this.finishTime);
+                hud.setTargetSelectionEnd(getCharactersTyped());
+                hud.highlightText(0);
             } else {
                 setCurrentPredictedWordIndex(getCurrentPredictedWordIndex()+1);
                 curPredWordIndex = getCurrentPredictedWordIndex();
                 setCurrentPredictedWord(predictionArrayTemp[curPredWordIndex]);
+                hud.setTargetSelectionEnd(getCharactersTyped());
+                hud.highlightText(getCurrentPredictedWord().length());
             }
-            hud.setTargetSelectionEnd(getCharactersTyped());
-            hud.highlightText();
         }
 
     }
@@ -120,7 +123,7 @@ public class Game {
      * @param text the string that the user has typed. Oftentimes a char.
      */
     public void textWasReplaced(int offset, String text){
-        System.out.println("Text was replaced");
+//        System.out.println("Text was replaced");
         String currentlyTypedWord = getCurrentTypedWord();
         // Appending char at end
         if (offset == currentlyTypedWord.length()) {
@@ -132,7 +135,7 @@ public class Game {
                     + currentlyTypedWord.substring(offset));
         }
 
-        System.out.printf("CurrentTypedWord = %s%n",getCurrentTypedWord());
+//        System.out.printf("CurrentTypedWord = %s%n",getCurrentTypedWord());
 
         // Check if the current typed word is the one we are meant to predict
         currentlyTypedWord = getCurrentTypedWord();

@@ -105,15 +105,27 @@ public class HUD {
     /**
      * Highlight the target text that the user has typed correctly
      */
-    public void highlightText() {
+    public void highlightText(int lengthNextWord) {
         // Help from https://stackoverflow.com/questions/5949524/highlight-sentence-in-textarea
         // https://stackoverflow.com/questions/20341719/how-to-highlight-a-single-word-in-a-jtextarea
         h.removeAllHighlights();
+        // https://stackoverflow.com/questions/9650992/how-to-change-text-color-in-the-jtextarea
+        Highlighter.HighlightPainter cyanPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.cyan);
+        Highlighter.HighlightPainter redPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.red);
         try {
-            h.addHighlight(0 , getTargetSelectionEnd(), DefaultHighlighter.DefaultPainter);
+            // Highlight words that have already been typed
+            h.addHighlight(0 , getTargetSelectionEnd(), cyanPainter);
+            // Highlight the next word to be typed.
+            System.out.printf("LengthNextWord = %d", lengthNextWord);
+            h.addHighlight(getTargetSelectionEnd(),getTargetSelectionEnd() + lengthNextWord,redPainter);
         } catch (BadLocationException e) {
             e.printStackTrace();
         }
+
+    }
+
+    public void highlightNextWord() {
+        Highlighter nextWordHighlighter = textAreaTarget.getHighlighter();
 
     }
 
