@@ -12,6 +12,7 @@ import java.util.TimerTask;
 import java.util.Timer;
 
 public class Game {
+    // TODO: Comment newly added code. Add unit tests.
     private final HUD hud;
     private DocumentFilterListener typingListener;
     private String[] predictionArray;
@@ -50,7 +51,6 @@ public class Game {
         TimerTask task = new TimerTask() {
             public void run() {
                 if(!getFinished()) {
-                    System.out.println("Timer called");
                     double timeInSeconds = nanoToSeconds(getTime()-startTime);
                     System.out.println(timeInSeconds);
                     double wordsPerMin = calculateWordsPerMinute(numberOfWordsCompleted,timeInSeconds);
@@ -88,6 +88,7 @@ public class Game {
         if (getFinished()) {
             throw new RuntimeException("There is no next predicted word!");
         } else {
+            numberOfWordsCompleted++;
             int curPredWordIndex = getCurrentPredictedWordIndex();
             String currentPredictedWord = getCurrentPredictedWord();
             int nrCharacters = currentPredictedWord.length();
@@ -143,7 +144,6 @@ public class Game {
             System.out.println("You got it right!");
             hud.clearTextTypeArea();
             setCurrentTypedWord("");
-            numberOfWordsCompleted++;
             updateNextPredictedWord();
         } else {
             hud.setTextTypeArea(currentlyTypedWord);
