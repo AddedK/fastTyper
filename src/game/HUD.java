@@ -71,7 +71,7 @@ public class HUD {
 
         // From https://www.javatpoint.com/java-jlabel
         this.wordPerMinuteLabel = new JLabel();
-        wordPerMinuteLabel.setText("label text");
+        wordPerMinuteLabel.setText("wpm:");
         wordPerMinuteLabel.setBounds(250,10, 100,50);
         f.add(wordPerMinuteLabel);
 

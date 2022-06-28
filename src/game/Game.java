@@ -54,7 +54,7 @@ public class Game {
                     double timeInSeconds = nanoToSeconds(getTime()-startTime);
                     System.out.println(timeInSeconds);
                     double wordsPerMin = calculateWordsPerMinute(numberOfWordsCompleted,timeInSeconds);
-                    hud.setWordsPerMinuteText(Double.toString(wordsPerMin));
+                    hud.setWordsPerMinuteText("wpm: " + Double.toString(wordsPerMin));
                 }
             }
         };
@@ -103,7 +103,7 @@ public class Game {
                 showTimeResults();
                 double timeInSeconds = nanoToSeconds(this.finishTime);
                 double wordsPerMin = calculateWordsPerMinute(numberOfWordsCompleted,timeInSeconds);
-                hud.setWordsPerMinuteText(Double.toString(wordsPerMin));
+                hud.setWordsPerMinuteText("wpm:" + Double.toString(wordsPerMin));
             } else {
                 setCurrentPredictedWordIndex(getCurrentPredictedWordIndex()+1);
                 curPredWordIndex = getCurrentPredictedWordIndex();
