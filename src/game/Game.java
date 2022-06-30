@@ -10,7 +10,7 @@ import javax.swing.*;
 import java.util.TimerTask;
 import java.util.Timer;
 
-// TODO: charactersTyped is the same as lastCorrectWordIndex since it is only updated at updateNextPredictWord
+// TODO: Test textWasRemoved and getcharacterstyped when removing text
 public class Game {
     private final HUD hud;
     private DocumentFilterListener typingListener;

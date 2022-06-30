@@ -163,7 +163,7 @@ class GameTest {
     }
 
     /**
-     * TextWasReplaced tests and charactersTypedTests
+     * TextWasReplaced and charactersTyped Tests
      */
 
     @Test
@@ -258,6 +258,87 @@ class GameTest {
         }
     }
 
+    /**
+     * TextWasRemoved  and charactersTyped Tests
+     */
+
+    @Test
+    public void testTextWasRemovedOneSentence1() {
+        String predictionString1 = "Party.";
+        Game game = new Game(predictionString1,false);
+
+        int charactersTyped = game.getCharactersTyped();
+        int expectedCharactersTyped = 0;
+        assertEquals(expectedCharactersTyped,charactersTyped);
+
+        String currentTypedWord = "";
+        String expectedCurrentlyTypedWord = "";
+        String[] predictionArray = game.getPredictionArray();
+
+        // Type in "P"
+        game.textWasReplaced(0,"P");
+        expectedCharactersTyped++;
+        expectedCurrentlyTypedWord = "P";
+
+        charactersTyped = game.getCharactersTyped();
+        assertEquals(charactersTyped,expectedCharactersTyped);
+
+        currentTypedWord = game.getCurrentTypedWord();
+        assertEquals(expectedCurrentlyTypedWord,currentTypedWord);
+
+        // Remove last character "P"
+        game.textWasRemoved(0,1);
+        expectedCharactersTyped--;
+        expectedCurrentlyTypedWord = "";
+
+        charactersTyped = game.getCharactersTyped();
+        assertEquals(charactersTyped,expectedCharactersTyped);
+
+        currentTypedWord = game.getCurrentTypedWord();
+        assertEquals(expectedCurrentlyTypedWord,currentTypedWord);
+
+        // Type in "P","a","r","t","y"
+        game.textWasReplaced(0,"P");
+        game.textWasReplaced(1,"a");
+        game.textWasReplaced(2,"r");
+        game.textWasReplaced(3,"t");
+        game.textWasReplaced(4,"y");
+        expectedCharactersTyped = 5;
+        expectedCurrentlyTypedWord = "Party";
+
+        charactersTyped = game.getCharactersTyped();
+        assertEquals(charactersTyped,expectedCharactersTyped);
+
+        currentTypedWord = game.getCurrentTypedWord();
+        assertEquals(expectedCurrentlyTypedWord,currentTypedWord);
+
+        // Remove "arty"
+        game.textWasRemoved(1,4);
+        expectedCharactersTyped = 1;
+        expectedCurrentlyTypedWord = "P";
+
+        charactersTyped = game.getCharactersTyped();
+        assertEquals(charactersTyped,expectedCharactersTyped);
+
+        currentTypedWord = game.getCurrentTypedWord();
+        assertEquals(expectedCurrentlyTypedWord,currentTypedWord);
+
+        // Type in "arty."
+        game.textWasReplaced(1,"a");
+        game.textWasReplaced(2,"r");
+        game.textWasReplaced(3,"t");
+        game.textWasReplaced(4,"y");
+        game.textWasReplaced(5,".");
+        expectedCharactersTyped = 6;
+        expectedCurrentlyTypedWord = "";
+
+        charactersTyped = game.getCharactersTyped();
+        assertEquals(charactersTyped,expectedCharactersTyped);
+
+        currentTypedWord = game.getCurrentTypedWord();
+        assertEquals(expectedCurrentlyTypedWord,currentTypedWord);
+
+    }
 
 
     @Test
