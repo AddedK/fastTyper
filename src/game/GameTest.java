@@ -212,6 +212,52 @@ class GameTest {
         }
     }
 
+    @Test
+    public void testTextWasReplacedMultiSentence1() {
+        // Type in the characters in the prediction string one at a time
+        String predictionString1 = "Party.\nTime to have fun.";
+        Game game = new Game(predictionString1,false);
+
+        int charactersTyped = game.getCharactersTyped();
+        int expectedCharactersTyped = 0;
+        assertEquals(expectedCharactersTyped,charactersTyped);
+
+        String currentTypedWord;
+        String expectedCurrentlyTypedWord;
+        String[] predictionArray = game.getPredictionArray();
+
+        int offset;
+        for (String predictedWord: predictionArray) {
+            offset = 0;
+
+            expectedCurrentlyTypedWord = "";
+            currentTypedWord = game.getCurrentTypedWord();
+            assertEquals(expectedCurrentlyTypedWord,currentTypedWord);
+            char[] predictedWordCharArray = predictedWord.toCharArray();
+
+            for (int i = 0; i < predictedWordCharArray.length; i++) {
+                char character = predictedWordCharArray[i];
+
+                String characterString = "" + character;
+                game.textWasReplaced(offset,characterString);
+                offset++;
+                expectedCharactersTyped++;
+                // final character edge case
+                if(i == predictedWordCharArray.length-1) {
+                    expectedCurrentlyTypedWord = "";
+                } else {
+                    expectedCurrentlyTypedWord = expectedCurrentlyTypedWord + character;
+                }
+
+                charactersTyped = game.getCharactersTyped();
+                assertEquals(charactersTyped,expectedCharactersTyped);
+
+                currentTypedWord = game.getCurrentTypedWord();
+                assertEquals(expectedCurrentlyTypedWord,currentTypedWord);
+            }
+        }
+    }
+
 
 
     @Test
