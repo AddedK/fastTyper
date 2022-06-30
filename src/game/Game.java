@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.util.TimerTask;
 import java.util.Timer;
 
+// TODO: charactersTyped is the same as lastCorrectWordIndex since it is only updated at updateNextPredictWord
 public class Game {
     private final HUD hud;
     private DocumentFilterListener typingListener;
@@ -90,7 +91,7 @@ public class Game {
             int curPredWordIndex = getCurrentPredictedWordIndex();
             String currentPredictedWord = getCurrentPredictedWord();
             int nrCharacters = currentPredictedWord.length();
-            setCharactersTyped(getCharactersTyped()+nrCharacters);
+//            setCharactersTyped(getCharactersTyped()+nrCharacters);
             setLastCorrectWordIndex(getLastCorrectWordIndex() + nrCharacters);
             String[] predictionArrayTemp = getPredictionArray();
             if(curPredWordIndex == predictionArrayTemp.length-1) {
@@ -137,6 +138,7 @@ public class Game {
                     + currentlyTypedWord.substring(offset));
         }
 //        System.out.printf("CurrentTypedWord = %s%n",getCurrentTypedWord());
+        setCharactersTyped(getCharactersTyped()+textLength);
 
         // Check if the current typed word is the one we are meant to predict
         currentlyTypedWord = getCurrentTypedWord();
@@ -169,6 +171,7 @@ public class Game {
             hud.setTextTypeArea(currentTypedWord);
             this.hud.setTypingAreaCaretPosition(offset);
             updateCurrentWordHighlighting();
+            setCharactersTyped(getCharactersTyped()-length);
         }
         typingListener.setListening(true);
 

@@ -163,28 +163,56 @@ class GameTest {
     }
 
     /**
-     * CharactersTyped tests
+     * TextWasReplaced tests and charactersTypedTests
      */
 
     @Test
-    public void testCharactersTypedSimple1() {
-        String predictionString1 = "Party time.\nGreat.";
+    public void testTextWasReplacedOneSentence1() {
+        // Type in the characters in the prediction string one at a time
+        String predictionString1 = "Party.";
         Game game = new Game(predictionString1,false);
+
         int charactersTyped = game.getCharactersTyped();
-        assertEquals(0,charactersTyped);
+        int expectedCharactersTyped = 0;
+        assertEquals(expectedCharactersTyped,charactersTyped);
 
-        game.updateNextPredictedWord();
-        charactersTyped = game.getCharactersTyped();
-        assertEquals(6,charactersTyped);
+        String currentTypedWord;
+        String expectedCurrentlyTypedWord;
+        String[] predictionArray = game.getPredictionArray();
 
-        game.updateNextPredictedWord();
-        charactersTyped = game.getCharactersTyped();
-        assertEquals(12,charactersTyped);
+        int offset;
+        for (String predictedWord: predictionArray) {
+            offset = 0;
 
-        game.updateNextPredictedWord();
-        charactersTyped = game.getCharactersTyped();
-        assertEquals(18,charactersTyped);
+            expectedCurrentlyTypedWord = "";
+            currentTypedWord = game.getCurrentTypedWord();
+            assertEquals(expectedCurrentlyTypedWord,currentTypedWord);
+            char[] predictedWordCharArray = predictedWord.toCharArray();
+
+            for (int i = 0; i < predictedWordCharArray.length; i++) {
+                char character = predictedWordCharArray[i];
+
+                String characterString = "" + character;
+                game.textWasReplaced(offset,characterString);
+                offset++;
+                expectedCharactersTyped++;
+                // final character edge case
+                if(i == predictedWordCharArray.length-1) {
+                    expectedCurrentlyTypedWord = "";
+                } else {
+                    expectedCurrentlyTypedWord = expectedCurrentlyTypedWord + character;
+                }
+
+                charactersTyped = game.getCharactersTyped();
+                assertEquals(charactersTyped,expectedCharactersTyped);
+
+                currentTypedWord = game.getCurrentTypedWord();
+                assertEquals(expectedCurrentlyTypedWord,currentTypedWord);
+            }
+        }
     }
+
+
 
     @Test
     public void testLastCorrectWordIndexSimple1() {
