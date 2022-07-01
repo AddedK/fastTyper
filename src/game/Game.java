@@ -10,10 +10,15 @@ import javax.swing.*;
 import java.util.TimerTask;
 import java.util.Timer;
 
-// TODO: Test textWasRemoved and getcharacterstyped when removing text
+/** TODO desired features
+ * Make prediction strings from text files, so that user can FastType any text.
+ * Give a 3 second preparation time before user starts typing
+ * Add buttons that allows user to redo typing a text, or allows them to type in the next text
+ */
 public class Game {
     private final HUD hud;
     private DocumentFilterListener typingListener;
+    private PredictionTextReader ptr;
     private String[] predictionArray;
     public int numberOfWordsCompleted;
     private int currentPredictedWordIndex;
@@ -31,19 +36,19 @@ public class Game {
      * @param predictionString The target text the user must type.
      */
     public Game(String predictionString, boolean visible) {
-        setPredictionArray(createPredictionArray(predictionString));
-        setCharactersTyped(0);
-        setLastCorrectWordIndex(0);
-        setFinished(false);
+        clearProgress();
+        typingListener = new DocumentFilterListener(this);
 
         hud = new HUD(visible);
-        hud.setTextShowArea(predictionString);
+        this.ptr = null;
+        setPredictionArray(createPredictionArray(predictionString));
 
-        typingListener = new DocumentFilterListener(this);
+
+        hud.setTextShowArea(predictionString);
         hud.setTypingAreaListener(typingListener);
         hud.highlightCompletedText(0);
 
-        this.numberOfWordsCompleted = 0;
+
         // Start countdown
         this.startTime = System.nanoTime();
         this.finishTime = 0;
@@ -62,6 +67,48 @@ public class Game {
         timer.schedule(task, delay, delay);
     }
 
+    public Game(PredictionTextReader ptr, boolean visible) {
+        clearProgress();
+        typingListener = new DocumentFilterListener(this);
+
+
+        this.ptr = ptr;
+        String predictionString = ptr.textFileToPrediction(0);
+        setPredictionArray(createPredictionArray(predictionString));
+
+        hud = new HUD(visible);
+        hud.setTextShowArea(predictionString);
+        hud.setTypingAreaListener(typingListener);
+        hud.highlightCompletedText(0);
+
+
+        // Start countdown
+        this.startTime = System.nanoTime();
+        this.finishTime = 0;
+
+        // Add timer that updates word-per-minute label
+        TimerTask task = new TimerTask() {
+            public void run() {
+                if(!getFinished()) {
+                    long currentTime = System.nanoTime();
+                    updateWPMDisplay(currentTime);
+                }
+            }
+        };
+        Timer timer = new Timer("timer");
+        long delay = 2000L;
+        timer.schedule(task, delay, delay);
+    }
+
+
+    public void clearProgress() {
+        setCharactersTyped(0);
+        setLastCorrectWordIndex(0);
+        setFinished(false);
+        this.numberOfWordsCompleted = 0;
+
+    }
+
     /**
      * Turns an unformated string to be typed into an array of words that
      * can be used to compare to what the user has typed.
@@ -74,9 +121,11 @@ public class Game {
         for (int i = 0; i < predictionArray.length-1; i++) {
             predictionArray[i] += " ";
         }
+        System.out.println("Printing in create prediction array");
         for (String s : predictionArray) {
             System.out.print(s);
         }
+        System.out.println("");
         return predictionArray;
     }
 
@@ -324,7 +373,11 @@ public class Game {
     public static void main(String[] args) {
 //        String longPredictionString = "You are supposed to type this.\nThis is a new line hahahaha.\nThis is another line.";
         String shortPredictionString = "You are supposed to type this.\nThis is a new line.";
-        Game game = new Game(shortPredictionString,true);
+        PredictionTextReader ptr = new PredictionTextReader("src/game/predictionFiles1");
+//        Game game = new Game(shortPredictionString,true,null);
+        Game game = new Game(ptr,true);
+
+
 
     }
 }
