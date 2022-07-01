@@ -20,6 +20,7 @@ public class HUD {
     Highlighter.HighlightPainter cyanPainter;
     Highlighter.HighlightPainter redPainter;
     private JLabel wordPerMinuteLabel;
+    private JButton nextTextButton;
 
 
     public HUD(boolean visible) {
@@ -62,12 +63,10 @@ public class HUD {
         cyanPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.cyan);
         redPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.red);
 
+        nextTextButton=new JButton("Get Next Text");
+        nextTextButton.setBounds(120,300,120,40);
 
-
-        JButton b=new JButton("Click Here");
-        b.setBounds(50,50,95,30);
-
-        f.add(b);
+        f.add(nextTextButton);
         f.add(typingArea);
         f.add(textAreaTarget);
         f.setSize(FRAME_WIDTH,FRAME_HEIGHT);
@@ -95,9 +94,6 @@ public class HUD {
     public void clearTextTypeArea() {
         typingArea.selectAll();
         typingArea.replaceSelection("");
-    }
-    public void appendTextToTypeArea(String text) {
-        typingArea.append(text);
     }
 
     public void setTextShowArea(String text) {
@@ -153,18 +149,16 @@ public class HUD {
         }
     }
 
-
-    public void highlightNextWord() {
-        Highlighter nextWordHighlighter = textAreaTarget.getHighlighter();
-
-    }
-
     public void setTextTypeArea(String text) {
         typingArea.setText(text);
     }
 
     public void setTypingAreaListener(DocumentFilterListener dfl) {
         ((AbstractDocument)this.typingArea.getDocument()).setDocumentFilter(dfl);
+    }
+
+    public void setNextTextButtonActionListener(ButtonListener bl) {
+        this.nextTextButton.addActionListener(bl);
     }
 
 
