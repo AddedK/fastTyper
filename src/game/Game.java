@@ -46,9 +46,7 @@ public class Game {
 
         this.ptr = null;
         setPredictionArray(createPredictionArray(predictionString));
-
-        hud.setTextShowArea(predictionString);
-        hud.highlightCompletedText(0);
+        showNextTextHud(predictionString);
 
         // Add timer that updates word-per-minute label
         TimerTask task = new TimerTask() {
@@ -60,14 +58,11 @@ public class Game {
             }
         };
 
-
         // Start countdown
         resetAndStartTime();
 
+        setTimer(task);
 
-        Timer timer = new Timer("timer");
-        long delay = 2000L;
-        timer.schedule(task, delay, delay);
     }
 
     /**
@@ -84,10 +79,9 @@ public class Game {
         setPredictionArray(createPredictionArray(predictionString));
 
         hud = new HUD(visible);
-        hud.setTextShowArea(predictionString);
+        showNextTextHud(predictionString);
         hud.setTypingAreaListener(typingListener);
         hud.setNextTextButtonActionListener(nextTextButtonListener);
-        hud.highlightCompletedText(0);
 
         // Add timer that updates word-per-minute label
         TimerTask task = new TimerTask() {
@@ -101,9 +95,7 @@ public class Game {
         // Start countdown
         resetAndStartTime();
 
-        WPMTimer = new Timer("timer");
-        long delay = 2000L;
-        WPMTimer.schedule(task, delay, delay);
+        setTimer(task);
     }
 
     /**
@@ -295,11 +287,11 @@ public class Game {
             String predictionString = ptr.textFileToPrediction();
             setPredictionArray(createPredictionArray(predictionString));
 
-            hud.setTextShowArea(predictionString);
+            showNextTextHud(predictionString);
             typingListener.setListening(false);
             hud.setTextTypeArea("");
             typingListener.setListening(true);
-            hud.highlightCompletedText(0);
+
 
             // Add timer that updates word-per-minute label
             TimerTask task = new TimerTask() {
@@ -313,11 +305,14 @@ public class Game {
             WPMTimer.cancel();
             resetAndStartTime();
 
-            WPMTimer = new Timer("timer");
-            long delay = 2000L;
-            WPMTimer.schedule(task, delay, delay);
+            setTimer(task);
         }
 
+    }
+
+    public void showNextTextHud(String predictionString) {
+        hud.setTextShowArea(predictionString);
+        hud.highlightCompletedText(0);
     }
 
     /**
@@ -393,6 +388,12 @@ public class Game {
     }
     public long getFinishTime() {
         return finishTime;
+    }
+
+    private void setTimer(TimerTask task) {
+        WPMTimer = new Timer("timer");
+        long delay = 2000L;
+        WPMTimer.schedule(task, delay, delay);
     }
 
     /**
