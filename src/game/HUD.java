@@ -99,6 +99,9 @@ public class HUD {
     public void setTextShowArea(String text) {
         textAreaTarget.setText(text);
         textAreaTarget.setFont(textAreaTarget.getFont().deriveFont(15f));
+        // Also, make sure cursor is on typing area
+        typingArea.requestFocusInWindow();
+
     }
 
     public void setWordsPerMinuteText(String wordsPerMinute) {

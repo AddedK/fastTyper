@@ -11,8 +11,7 @@ import java.util.TimerTask;
 import java.util.Timer;
 
 /** TODO desired features
- * After user finishes typing a text with ptr, get next text
- * Make prediction strings from text files, so that user can FastType any text.
+ * maybe next text button  only work if user is finished?
  * Give a 3 second preparation time before user starts typing
  * Add buttons that allows user to redo typing a text, or allows them to type in the next text
  */
@@ -313,6 +312,7 @@ public class Game {
     public void showNextTextHud(String predictionString) {
         hud.setTextShowArea(predictionString);
         hud.highlightCompletedText(0);
+
     }
 
     /**
