@@ -11,6 +11,7 @@ import java.util.TimerTask;
 import java.util.Timer;
 
 /** TODO desired features
+ * After user finishes typing a text with ptr, get next text
  * Make prediction strings from text files, so that user can FastType any text.
  * Give a 3 second preparation time before user starts typing
  * Add buttons that allows user to redo typing a text, or allows them to type in the next text
@@ -18,6 +19,7 @@ import java.util.Timer;
 public class Game {
     private final HUD hud;
     private DocumentFilterListener typingListener;
+    private ButtonListener nextTextButtonListener;
     private PredictionTextReader ptr;
     private String[] predictionArray;
     public int numberOfWordsCompleted;
@@ -29,6 +31,7 @@ public class Game {
     private int lastCorrectWordIndex; // The index of the last character in the most recently correctly typed word.
     private long startTime; // System.nanotime() when user is allowed to type
     private long finishTime; // System.nanotime() return when user types the final word.
+    private Timer WPMTimer;
 
     /**
      * Game constructor. This fixes the predicted string and sets up the HUD that visualizes the text.
@@ -44,13 +47,8 @@ public class Game {
         this.ptr = null;
         setPredictionArray(createPredictionArray(predictionString));
 
-
         hud.setTextShowArea(predictionString);
         hud.highlightCompletedText(0);
-
-
-        // Start countdown
-        resetAndStartTime();
 
         // Add timer that updates word-per-minute label
         TimerTask task = new TimerTask() {
@@ -61,6 +59,12 @@ public class Game {
                 }
             }
         };
+
+
+        // Start countdown
+        resetAndStartTime();
+
+
         Timer timer = new Timer("timer");
         long delay = 2000L;
         timer.schedule(task, delay, delay);
@@ -73,18 +77,17 @@ public class Game {
     public Game(PredictionTextReader ptr, boolean visible) {
         clearProgress();
         typingListener = new DocumentFilterListener(this);
+        nextTextButtonListener = new ButtonListener(this);
 
         this.ptr = ptr;
-        String predictionString = ptr.textFileToPrediction(0);
+        String predictionString = ptr.textFileToPrediction();
         setPredictionArray(createPredictionArray(predictionString));
 
         hud = new HUD(visible);
         hud.setTextShowArea(predictionString);
         hud.setTypingAreaListener(typingListener);
+        hud.setNextTextButtonActionListener(nextTextButtonListener);
         hud.highlightCompletedText(0);
-
-        // Start countdown
-        resetAndStartTime();
 
         // Add timer that updates word-per-minute label
         TimerTask task = new TimerTask() {
@@ -95,9 +98,12 @@ public class Game {
                 }
             }
         };
-        Timer timer = new Timer("timer");
+        // Start countdown
+        resetAndStartTime();
+
+        WPMTimer = new Timer("timer");
         long delay = 2000L;
-        timer.schedule(task, delay, delay);
+        WPMTimer.schedule(task, delay, delay);
     }
 
     /**
@@ -131,7 +137,7 @@ public class Game {
         for (String s : predictionArray) {
             System.out.print(s);
         }
-        System.out.println("");
+        System.out.println();
         return predictionArray;
     }
 
@@ -282,6 +288,38 @@ public class Game {
         hud.highlightText(getLastCorrectWordIndex(),nrCorrectCharacters,nrWrongCharacters);
     }
 
+    public void getNextText() {
+        ptr.incrementPredictionFileIndex();
+        if(ptr.hasMoreFiles()) {
+            clearProgress();
+            String predictionString = ptr.textFileToPrediction();
+            setPredictionArray(createPredictionArray(predictionString));
+
+            hud.setTextShowArea(predictionString);
+            typingListener.setListening(false);
+            hud.setTextTypeArea("");
+            typingListener.setListening(true);
+            hud.highlightCompletedText(0);
+
+            // Add timer that updates word-per-minute label
+            TimerTask task = new TimerTask() {
+                public void run() {
+                    if(!getFinished()) {
+                        long currentTime = System.nanoTime();
+                        updateWPMDisplay(currentTime);
+                    }
+                }
+            };
+            WPMTimer.cancel();
+            resetAndStartTime();
+
+            WPMTimer = new Timer("timer");
+            long delay = 2000L;
+            WPMTimer.schedule(task, delay, delay);
+        }
+
+    }
+
     /**
      * Getters and setters
      */
@@ -386,4 +424,5 @@ public class Game {
 
 
     }
+
 }
