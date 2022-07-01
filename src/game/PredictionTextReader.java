@@ -7,7 +7,7 @@ package game;
 import java.io.*;
 
 public class PredictionTextReader {
-    private String directoryOfPredictionFiles;
+    private String directoryOfPredictionFiles; // The directory where it looks for text files
     private String[] listOfPredictionFileNames;
     private int currentPredictionFileIndex;
 
