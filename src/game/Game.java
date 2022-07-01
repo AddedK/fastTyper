@@ -38,20 +38,19 @@ public class Game {
     public Game(String predictionString, boolean visible) {
         clearProgress();
         typingListener = new DocumentFilterListener(this);
-
         hud = new HUD(visible);
+        hud.setTypingAreaListener(typingListener);
+
         this.ptr = null;
         setPredictionArray(createPredictionArray(predictionString));
 
 
         hud.setTextShowArea(predictionString);
-        hud.setTypingAreaListener(typingListener);
         hud.highlightCompletedText(0);
 
 
         // Start countdown
-        this.startTime = System.nanoTime();
-        this.finishTime = 0;
+        resetAndStartTime();
 
         // Add timer that updates word-per-minute label
         TimerTask task = new TimerTask() {
@@ -67,10 +66,13 @@ public class Game {
         timer.schedule(task, delay, delay);
     }
 
+    /**
+     * Game constructor that uses predictionTextReader instead.
+     * @param ptr The PredictionTextReader that reads texts from files.
+     */
     public Game(PredictionTextReader ptr, boolean visible) {
         clearProgress();
         typingListener = new DocumentFilterListener(this);
-
 
         this.ptr = ptr;
         String predictionString = ptr.textFileToPrediction(0);
@@ -81,10 +83,8 @@ public class Game {
         hud.setTypingAreaListener(typingListener);
         hud.highlightCompletedText(0);
 
-
         // Start countdown
-        this.startTime = System.nanoTime();
-        this.finishTime = 0;
+        resetAndStartTime();
 
         // Add timer that updates word-per-minute label
         TimerTask task = new TimerTask() {
@@ -100,13 +100,19 @@ public class Game {
         timer.schedule(task, delay, delay);
     }
 
-
+    /**
+     * Clears the users progress. Called when game initialized or user wants to type new text.
+     */
     public void clearProgress() {
         setCharactersTyped(0);
         setLastCorrectWordIndex(0);
         setFinished(false);
         this.numberOfWordsCompleted = 0;
+    }
 
+    void resetAndStartTime() {
+        this.startTime = System.nanoTime();
+        this.finishTime = 0;
     }
 
     /**
@@ -374,7 +380,7 @@ public class Game {
 //        String longPredictionString = "You are supposed to type this.\nThis is a new line hahahaha.\nThis is another line.";
         String shortPredictionString = "You are supposed to type this.\nThis is a new line.";
         PredictionTextReader ptr = new PredictionTextReader("src/game/predictionFiles1");
-//        Game game = new Game(shortPredictionString,true,null);
+//        Game game = new Game(shortPredictionString,true);
         Game game = new Game(ptr,true);
 
 
