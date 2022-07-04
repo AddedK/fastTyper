@@ -7,6 +7,6 @@ The user can **start** FastTyper by running the Main method in _Game.java_.
 
 
 ### The motivation behind FastTyper
-I've always been interested in writing my own little game where the user has to type quickly. Practicing in this ought to increase one's productivity.
+I've always been interested in writing my own little game where the user has to type quickly. Faster typing speed could lead to improved productivity.
 
 I also wanted to refresh and strengthen my Java and testing skills.
