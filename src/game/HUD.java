@@ -28,7 +28,7 @@ public class HUD {
         // Typing area constants
         final int TYPING_AREA_TARGET_X = 50;
         final int TYPING_AREA_TARGET_Y = 200;
-        final int TYPING_AREA_TARGET_WIDTH = 250;
+        final int TYPING_AREA_TARGET_WIDTH = 280;
         final int TYPING_AREA_TARGET_HEIGHT = 20;
         final int TYPING_AREA_TARGET_ROWS = 2;
         final int TYPING_AREA_TARGET_COLUMNS = 2;
@@ -36,27 +36,43 @@ public class HUD {
 
         // Text area target constants
         final int TEXT_AREA_TARGET_X = 50;
-        final int TEXT_AREA_TARGET_Y = 100;
-        final int TEXT_AREA_TARGET_WIDTH = 250;
-        final int TEXT_AREA_TARGET_HEIGHT = 70;
+        final int TEXT_AREA_TARGET_Y = 90;
+        final int TEXT_AREA_TARGET_WIDTH = 280;
+        final int TEXT_AREA_TARGET_HEIGHT = 80;
         final int TEXT_AREA_TARGET_ROWS = 2;
         final int TEXT_AREA_TARGET_COLUMNS = 1;
 
         // JFrame constants
         final int FRAME_WIDTH = 400;
-        final int FRAME_HEIGHT = 500;
+        final int FRAME_HEIGHT = 380;
+
+        // NextText button constants
+        final int NEXT_TEXT_BUTTON_X = 120;
+        final int NEXT_TEXT_BUTTON_Y = 250;
+        final int NEXT_TEXT_BUTTON_WIDTH = 120;
+        final int NEXT_TEXT_BUTTON_HEIGHT = 40;
+
+        // WPM label constants
+        final int WPM_LABEL_X = 150;
+        final int WPM_LABEL_Y = 20;
+        final int WPM_LABEL_WIDTH = 100;
+        final int WPM_LABEL_HEIGHT = 50;
+
 
         JFrame f=new JFrame("FastTyper");
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.setResizable(false);
         // set JFrame in center of the screen
         f.setLocationRelativeTo(null);
 
 
         typingArea=new JTextArea(TYPING_AREA_TARGET_ROWS,TYPING_AREA_TARGET_COLUMNS);
         typingArea.setBounds(TYPING_AREA_TARGET_X,TYPING_AREA_TARGET_Y, TYPING_AREA_TARGET_WIDTH,TYPING_AREA_TARGET_HEIGHT);
+        typingArea.setFont(typingArea.getFont().deriveFont(17f));
 
         textAreaTarget=new JTextArea(TEXT_AREA_TARGET_ROWS,TEXT_AREA_TARGET_COLUMNS);
         textAreaTarget.setBounds(TEXT_AREA_TARGET_X,TEXT_AREA_TARGET_Y, TEXT_AREA_TARGET_WIDTH,TEXT_AREA_TARGET_HEIGHT);
+        textAreaTarget.setFont(textAreaTarget.getFont().deriveFont(17f));
 
         h = textAreaTarget.getHighlighter();
         greenPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.green);
@@ -64,7 +80,7 @@ public class HUD {
         redPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.red);
 
         nextTextButton=new JButton("Get Next Text");
-        nextTextButton.setBounds(120,300,120,40);
+        nextTextButton.setBounds(NEXT_TEXT_BUTTON_X,NEXT_TEXT_BUTTON_Y,NEXT_TEXT_BUTTON_WIDTH,NEXT_TEXT_BUTTON_HEIGHT);
 
         f.add(nextTextButton);
         f.add(typingArea);
@@ -76,9 +92,11 @@ public class HUD {
         f.setLayout(null);
 
         // From https://www.javatpoint.com/java-jlabel
-        this.wordPerMinuteLabel = new JLabel();
+        wordPerMinuteLabel = new JLabel();
         wordPerMinuteLabel.setText("wpm:");
-        wordPerMinuteLabel.setBounds(250,10, 100,50);
+        wordPerMinuteLabel.setBounds(WPM_LABEL_X,WPM_LABEL_Y, WPM_LABEL_WIDTH,WPM_LABEL_HEIGHT);
+        wordPerMinuteLabel.setFont(this.wordPerMinuteLabel.getFont().deriveFont(17f));
+        setWordsPerMinuteText("wpm: 0.0");
         f.add(wordPerMinuteLabel);
 
         f.setVisible(visible);
@@ -98,7 +116,6 @@ public class HUD {
 
     public void setTextShowArea(String text) {
         textAreaTarget.setText(text);
-        textAreaTarget.setFont(textAreaTarget.getFont().deriveFont(15f));
         // Also, make sure cursor is on typing area
         typingArea.requestFocusInWindow();
 
