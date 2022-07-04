@@ -11,9 +11,7 @@ import java.util.TimerTask;
 import java.util.Timer;
 
 /** TODO desired features
- * maybe next text button  only work if user is finished?
- * Give a 3 second preparation time before user starts typing
- * Add buttons that allows user to redo typing a text, or allows them to type in the next text
+ *
  */
 public class Game {
     private final HUD hud;
@@ -416,7 +414,6 @@ public class Game {
 
 
     public static void main(String[] args) {
-//        String longPredictionString = "You are supposed to type this.\nThis is a new line hahahaha.\nThis is another line.";
         String shortPredictionString = "You are supposed to type this.\nThis is a new line.";
         PredictionTextReader ptr = new PredictionTextReader("src/game/predictionFiles1");
 //        Game game = new Game(shortPredictionString,true);
