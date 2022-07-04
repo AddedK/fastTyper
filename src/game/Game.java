@@ -414,13 +414,8 @@ public class Game {
 
 
     public static void main(String[] args) {
-        String shortPredictionString = "You are supposed to type this.\nThis is a new line.";
-        PredictionTextReader ptr = new PredictionTextReader("src/game/predictionFiles1");
-//        Game game = new Game(shortPredictionString,true);
+        PredictionTextReader ptr = new PredictionTextReader("src/game/predictionTexts");
         Game game = new Game(ptr,true);
-
-
-
     }
 
 }
