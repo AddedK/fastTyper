@@ -124,6 +124,39 @@ class GameTest {
 
     }
 
+    @Test
+    public void testUpdateNextPredictedWordPTR1() {
+
+        PredictionTextReader ptr = new PredictionTextReader("src/game/testPredictions1");
+        Game game = new Game(ptr,false);
+
+        String currentlyPredictedWord = game.getCurrentPredictedWord();
+        assertEquals(currentlyPredictedWord,"Test ");
+
+        game.updateNextPredictedWord();
+
+        currentlyPredictedWord = game.getCurrentPredictedWord();
+        assertEquals(currentlyPredictedWord,"sentence.");
+        int currentlyPredictedWordIndex = game.getCurrentPredictedWordIndex();
+        assertEquals(1,currentlyPredictedWordIndex);
+
+        game.updateNextPredictedWord();
+
+        assertTrue(game.getFinished());
+        assertNull(game.getCurrentPredictedWord());
+        currentlyPredictedWordIndex = game.getCurrentPredictedWordIndex();
+        assertEquals(-1,currentlyPredictedWordIndex);
+
+//        No more words to predict
+        Exception exception = assertThrows(RuntimeException.class, () -> game.updateNextPredictedWord());
+        assertEquals("There is no next predicted word!",exception.getMessage());
+        currentlyPredictedWord = game.getCurrentPredictedWord();
+        assertNull(currentlyPredictedWord);
+        currentlyPredictedWordIndex = game.getCurrentPredictedWordIndex();
+        assertEquals(-1,currentlyPredictedWordIndex);
+
+    }
+
 
     /**
      * CurrentPredictedWord tests
@@ -340,6 +373,39 @@ class GameTest {
 
     }
 
+    /**
+     * GetNextText tests
+     */
+
+    @Test
+    public void testGetNextText1() {
+
+        PredictionTextReader ptr = new PredictionTextReader("src/game/testPredictions1");
+        Game game = new Game(ptr,false);
+
+        String currentlyPredictedWord = game.getCurrentPredictedWord();
+        assertEquals(currentlyPredictedWord,"Test ");
+
+        game.updateNextPredictedWord();
+
+        currentlyPredictedWord = game.getCurrentPredictedWord();
+        assertEquals(currentlyPredictedWord,"sentence.");
+        int currentlyPredictedWordIndex = game.getCurrentPredictedWordIndex();
+        assertEquals(1,currentlyPredictedWordIndex);
+
+        game.updateNextPredictedWord();
+
+        assertTrue(game.getFinished());
+        assertNull(game.getCurrentPredictedWord());
+        currentlyPredictedWordIndex = game.getCurrentPredictedWordIndex();
+        assertEquals(-1,currentlyPredictedWordIndex);
+
+        game.getNextText();
+        currentlyPredictedWord = game.getCurrentPredictedWord();
+        assertEquals(currentlyPredictedWord,"This ");
+
+
+    }
 
     @Test
     public void testLastCorrectWordIndexSimple1() {
