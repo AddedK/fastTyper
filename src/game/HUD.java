@@ -25,35 +25,35 @@ public class HUD {
 
     public HUD(boolean visible) {
 
+        // JFrame constants
+        final int FRAME_WIDTH = 450;
+        final int FRAME_HEIGHT = 500;
+
         // Typing area constants
-        final int TYPING_AREA_TARGET_X = 50;
-        final int TYPING_AREA_TARGET_Y = 200;
-        final int TYPING_AREA_TARGET_WIDTH = 280;
-        final int TYPING_AREA_TARGET_HEIGHT = 20;
-        final int TYPING_AREA_TARGET_ROWS = 2;
-        final int TYPING_AREA_TARGET_COLUMNS = 2;
+        final int TYPING_AREA_X = 40;
+        final int TYPING_AREA_Y = 300;
+        final int TYPING_AREA_WIDTH = 350;
+        final int TYPING_AREA_HEIGHT = 20;
+        final int TYPING_AREA_ROWS = 2;
+        final int TYPING_AREA_COLUMNS = 2;
 
 
         // Text area target constants
-        final int TEXT_AREA_TARGET_X = 50;
-        final int TEXT_AREA_TARGET_Y = 90;
-        final int TEXT_AREA_TARGET_WIDTH = 280;
-        final int TEXT_AREA_TARGET_HEIGHT = 80;
+        final int TEXT_AREA_TARGET_X = 40;
+        final int TEXT_AREA_TARGET_Y = 80;
+        final int TEXT_AREA_TARGET_WIDTH = 350;
+        final int TEXT_AREA_TARGET_HEIGHT = 180;
         final int TEXT_AREA_TARGET_ROWS = 2;
         final int TEXT_AREA_TARGET_COLUMNS = 1;
 
-        // JFrame constants
-        final int FRAME_WIDTH = 400;
-        final int FRAME_HEIGHT = 380;
-
         // NextText button constants
-        final int NEXT_TEXT_BUTTON_X = 120;
-        final int NEXT_TEXT_BUTTON_Y = 250;
+        final int NEXT_TEXT_BUTTON_X = 140;
+        final int NEXT_TEXT_BUTTON_Y = 340;
         final int NEXT_TEXT_BUTTON_WIDTH = 120;
         final int NEXT_TEXT_BUTTON_HEIGHT = 40;
 
         // WPM label constants
-        final int WPM_LABEL_X = 150;
+        final int WPM_LABEL_X = 170;
         final int WPM_LABEL_Y = 20;
         final int WPM_LABEL_WIDTH = 100;
         final int WPM_LABEL_HEIGHT = 50;
@@ -66,13 +66,16 @@ public class HUD {
         f.setLocationRelativeTo(null);
 
 
-        typingArea=new JTextArea(TYPING_AREA_TARGET_ROWS,TYPING_AREA_TARGET_COLUMNS);
-        typingArea.setBounds(TYPING_AREA_TARGET_X,TYPING_AREA_TARGET_Y, TYPING_AREA_TARGET_WIDTH,TYPING_AREA_TARGET_HEIGHT);
+        typingArea=new JTextArea(TYPING_AREA_ROWS,TYPING_AREA_COLUMNS);
+        typingArea.setBounds(TYPING_AREA_X,TYPING_AREA_Y, TYPING_AREA_WIDTH,TYPING_AREA_HEIGHT);
         typingArea.setFont(typingArea.getFont().deriveFont(17f));
 
         textAreaTarget=new JTextArea(TEXT_AREA_TARGET_ROWS,TEXT_AREA_TARGET_COLUMNS);
         textAreaTarget.setBounds(TEXT_AREA_TARGET_X,TEXT_AREA_TARGET_Y, TEXT_AREA_TARGET_WIDTH,TEXT_AREA_TARGET_HEIGHT);
         textAreaTarget.setFont(textAreaTarget.getFont().deriveFont(17f));
+        textAreaTarget.setLineWrap(true);
+        textAreaTarget.setWrapStyleWord(true);
+
 
         h = textAreaTarget.getHighlighter();
         greenPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.green);
@@ -118,6 +121,15 @@ public class HUD {
         textAreaTarget.setText(text);
         // Also, make sure cursor is on typing area
         typingArea.requestFocusInWindow();
+        // Dynamically adjust font-size based on text length
+        int length = text.length();
+        if (length < 40) {
+            textAreaTarget.setFont(textAreaTarget.getFont().deriveFont(19f));
+        } else if (length < 80) {
+            textAreaTarget.setFont(textAreaTarget.getFont().deriveFont(17f));
+        } else {
+            textAreaTarget.setFont(textAreaTarget.getFont().deriveFont(15f));
+        }
 
     }
 
